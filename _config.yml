@@ -1,0 +1,42 @@
+name: Steven Thornton
+description: Steven Thornton
+about: Steven Thornton
+
+master_repo: false
+url: "steventhornton.github.io"
+markdown: kramdown
+highlighter: rouge
+asset_url: http://assets.steventhornton.ca
+
+plugins: ['jekyll-paginate-v2', 'jekyll-gist', 'jekyll-feed']
+
+# Sass conversion configs
+sass:
+    sass_dir: css
+    style: compressed
+
+# Pagination Settings
+pagination:
+  enabled: true
+  per_page: 5
+  offset: 0
+  permalink: '/:num/'
+  title: ':title - page :num of :max'
+  limit: 0
+  sort_field: 'date'
+  sort_reverse: true
+
+logo: logo.png
+
+
+
+owner:
+  name: whitepaper
+  email: "steven@steventhornton.ca"
+  # Social networking links used in footer. Update and remove as you like.
+  twitter: stevenethornton
+  github: https://github.com/steventhornton
+  linkedin: https://www.linkedin.com/in/stevenethornton
+
+# Analytics
+google_analytics: 86308175

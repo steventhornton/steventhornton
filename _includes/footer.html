@@ -1,0 +1,19 @@
+<footer>
+  <div class="container">
+    <ul class="social-media-icons">
+      {% if site.owner.linkedin %}
+      <li><a href="{{ site.owner.linkedin }}" class="social-media-icons"><i class="fa fa-2x fa-linkedin-square" aria-hidden="true"></i></a></li>
+      {% endif %}
+      {% if site.owner.email %}
+      <li><a href="mailto:{{ site.owner.email }}" class="social-media-icons"><i class="fa fa-2x fa-envelope-square" aria-hidden="true"></i></a></li>
+      {% endif %}
+      {% if site.owner.twitter %}  
+      <li><a href="https://twitter.com/{{ site.owner.twitter }}" class="social-media-icons"><i class="fa fa-2x fa-twitter-square" aria-hidden="true"></i></a></li>
+      {% endif %}
+      {% if site.owner.github %}  
+      <li><a href="{{ site.owner.github }}" class="social-media-icons"><i class="fa fa-2x fa-github-square" aria-hidden="true"></i></a></li>
+      {% endif %}
+      <li>
+    </ul>
+  </div>
+</footer>
