@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-86308175-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-86308175-1');
+</script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<title>Steven Thornton</title>
+<meta name="description" content="Steven Thornton">
+<meta name="keywords" content="">
+<!-- Twitter Card and Open Graph tags -->
+<meta name="twitter:title" content="Hyperparameter Tuning with hyperopt in Python &#8211; ">
+<meta name="twitter:description" content="Steven Thornton">
+<meta name="twitter:creator" content="@stevenethornton">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image:src" content="http://www.steventhornton.ca/images/logo.png">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Hyperparameter Tuning with hyperopt in Python &#8211; ">
+<meta property="og:description" content="Steven Thornton">
+<meta property="og:url" content="http://www.steventhornton.ca/blog/hyperparameter-tuning-with-hyperopt-in-python.html">
+<meta property="og:site_name" content="">
+
+<!-- MathJax -->
+
+  <script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    showMathMenu: false,
+    showProcessingMessages: false,
+    "HTML-CSS": {
+      scale: 90
+    },
+    tex2jax: {
+      inlineMath: [ ['$','$'] ],
+      displayMath: [ ['$$','$$'] ],
+      processEscapes: true,
+    }
+  });
+</script>
+<script type="text/javascript"
+        src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS_HTML">
+</script>
+
+
+<script src="https://code.jquery.com/jquery-3.4.0.min.js" integrity="sha256-BJeo0qm959uMBGb65z40ejJYGSgR7REI4+CW1fNKwOg=" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+<link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+
+<!-- Webmaster Tools verfication -->
+
+
+
+
+
+<link rel="canonical" href="http://www.steventhornton.ca/blog/hyperparameter-tuning-with-hyperopt-in-python.html">
+<link href="http://www.steventhornton.ca/feed.xml" type="application/atom+xml" rel="alternate" title=" Feed">
+
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<link href="https://fonts.googleapis.com/css?family=Zilla+Slab" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+
+<link rel="stylesheet" href="http://www.steventhornton.ca/css/main.css" type="text/css" />
+
+
+</head>
+<body>
+  <div class="container-fullwidth navbar-dark bg-dark nav-container">
+  <div class="container">
+    <nav class="navbar navbar-expand-lg  justify-content-end">
+      <a class="navbar-brand mr-auto" href="http://www.steventhornton.ca">Steven Thornton</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse flex-grow-0" id="navbarSupportedContent">
+        <ul class="navbar-nav text-right">
+          <li class="nav-item ">
+            <a class="nav-link" href="http://www.steventhornton.ca">Home</a>
+          </li>
+          <li class="nav-item ">
+            <a class="nav-link" href="http://www.steventhornton.ca/blog">Blog</a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+  </div>
+</div>
+
+  <div class="container">
+  <h2>Hyperparameter Tuning with hyperopt in Python</h2>
+<p class="post-date">March 06, 2017</p>
+<div class="post">
+<p><a href="https://github.com/steventhornton/Hyperparameter-Tuning-with-hyperopt-in-Python" target="_blank">The full code is available on Github.</a></p>
+
+<p>Hyperparameter tuning is an important step for maximizing the performance of a model. Several Python packages have been developed specifically for this purpose. Scikit-learn provides a <a href="http://scikit-learn.org/stable/modules/classes.html#hyper-parameter-optimizers" target="_blank">few options</a>, <code class="highlighter-rouge">GridSearchCV</code> and <code class="highlighter-rouge">RandomizedSearchCV</code> being two of the more popular options. Outside of scikit-learn, the <a href="https://pypi.python.org/pypi/Optunity" target="_blank">Optunity</a>, <a href="https://github.com/JasperSnoek/spearmint" target="_blank">Spearmint</a> and <a href="http://hyperopt.github.io/hyperopt/" target="_blank">hyperopt</a> packages are all designed for optimization. In this post, I will focus on the hyperopt package which provides algorithms that are able to outperform randomized search and can find results comparable to a grid search while fitting substantially less models.</p>
+
+<p>The IMBD movie review sentiment classification problem will be used as an illustrative example. This dataset appears in a Kaggle tutorial <a href="https://www.kaggle.com/c/word2vec-nlp-tutorial" target="_blank">Bag of Words Meets Bags of Popcorn</a>. The purpose of this post is not to achieve record breaking performance for this classification model; many people have already taken care of that (see the Kaggle <a href="https://www.kaggle.com/c/word2vec-nlp-tutorial/discussion" target="_blank">discussion</a>). Instead, I will discuss how you can use the hyperopt package to automate the hyperparamter tuning process. The ideas here are not limited to models built using scikit-learn, they can easily be adapted to any optimization problem. For models built with scikit-learn, hyperopt provides a packaged called <a href="http://hyperopt.github.io/hyperopt-sklearn/" target="_blank">hyperopt-sklearn</a> that is designed to work with scikit-learn models. I will not be discussing this package here, rather I will work with the base hyperopt package which allows greater flexibility.</p>
+
+<p>The model I will use is a fairly simple model for text classification consisting of building a term frequency–inverse document frequency (TF-IDF) matrix from the corpus of training texts, then training the <a href="http://scikit-learn.org/stable/modules/generated/sklearn.linear_model.SGDClassifier.html" target="_blank"><code class="highlighter-rouge">SGDClassifier</code></a> from scikit-learn with modified-huber loss on the corpus. The scoring metric I will use to evaluate the performance of the model is the area under the receiver operating characteristic curve (ROC AUC) as this is used in the Kaggle tutorial. Training this model with the default hyperparameters already provides a good result with an AUC score of 0.9519 on the test data. Using the procedure that follows I was able to improve the performance to an AUC score of 0.9621.</p>
+
+<h2 id="data-preprocessing">Data Preprocessing</h2>
+<p>The data for this tutorial can be downloaded from the Kaggle tutorial <a href="https://www.kaggle.com/c/word2vec-nlp-tutorial/data" target="_blank">here</a>. You should download the <code class="highlighter-rouge">labeledTrainData.tsv.zip</code> and <code class="highlighter-rouge">testData.tsv.zip</code> files. The unlabeled data will not be used.</p>
+
+<p>First, we need to load our data into a Pandas dataframe and add columns for the score (the rating of the review out of 10) and for the class (1 for positive, and 0 for negative). The test data will be sorted by class, this will be needed later when plotting the ROC curve.</p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="n">pd</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="n">np</span>
+
+<span class="c"># Load the data</span>
+<span class="n">df_train</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_table</span><span class="p">(</span><span class="s">'labeledTrainData.tsv'</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s">'</span><span class="se">\t</span><span class="s">'</span><span class="p">)</span>
+<span class="n">df_test</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_table</span><span class="p">(</span><span class="s">'testData.tsv'</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s">'</span><span class="se">\t</span><span class="s">'</span><span class="p">)</span>
+
+<span class="c"># Add a column for the score (out of 10)</span>
+<span class="n">df_train</span><span class="p">[</span><span class="s">'score'</span><span class="p">]</span> <span class="o">=</span> <span class="n">df_train</span><span class="p">[</span><span class="s">'id'</span><span class="p">]</span><span class="o">.</span><span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">'_'</span><span class="p">)[</span><span class="mi">1</span><span class="p">]))</span>
+<span class="n">df_test</span><span class="p">[</span><span class="s">'score'</span><span class="p">]</span> <span class="o">=</span> <span class="n">df_test</span><span class="p">[</span><span class="s">'id'</span><span class="p">]</span><span class="o">.</span><span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">'_'</span><span class="p">)[</span><span class="mi">1</span><span class="p">]))</span>
+
+<span class="c"># Add a column for the class, 1 for positive, 0 for negative</span>
+<span class="n">df_train</span><span class="p">[</span><span class="s">'class'</span><span class="p">]</span> <span class="o">=</span> <span class="n">df_train</span><span class="p">[</span><span class="s">'score'</span><span class="p">]</span><span class="o">.</span><span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="n">x</span> <span class="o">&gt;</span> <span class="mi">5</span><span class="p">))</span>
+<span class="n">df_test</span><span class="p">[</span><span class="s">'class'</span><span class="p">]</span> <span class="o">=</span> <span class="n">df_test</span><span class="p">[</span><span class="s">'score'</span><span class="p">]</span><span class="o">.</span><span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="n">x</span> <span class="o">&gt;</span> <span class="mi">5</span><span class="p">))</span>
+
+<span class="c"># Sort the df_test by class (it will need to be sorted later)</span>
+<span class="n">df_test</span> <span class="o">=</span> <span class="n">df_test</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="s">'class'</span><span class="p">,</span> <span class="n">ascending</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span></code></pre></figure>
+
+<p>The next step in any text classification problem is cleaning the documents.</p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="kn">from</span> <span class="nn">nltk.corpus</span> <span class="kn">import</span> <span class="n">stopwords</span>
+<span class="n">cachedStopWords</span> <span class="o">=</span> <span class="n">stopwords</span><span class="o">.</span><span class="n">words</span><span class="p">(</span><span class="s">'english'</span><span class="p">)</span>
+
+<span class="c"># Function for removing stopwords from a string</span>
+<span class="k">def</span> <span class="nf">removeStopwords</span><span class="p">(</span><span class="n">s</span><span class="p">):</span>
+    <span class="k">return</span> <span class="s">' '</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">word</span> <span class="k">for</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">s</span><span class="o">.</span><span class="n">split</span><span class="p">()</span> <span class="k">if</span> <span class="n">word</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">cachedStopWords</span><span class="p">])</span>
+
+<span class="c"># Function for cleaning the reviews</span>
+<span class="k">def</span> <span class="nf">cleanText</span><span class="p">(</span><span class="n">s</span><span class="p">):</span>
+    <span class="n">s</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="nb">str</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>                         <span class="c"># Convert to lowercase</span>
+    <span class="n">s</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="nb">str</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">r'&lt;.*?&gt;'</span><span class="p">,</span> <span class="s">' '</span><span class="p">)</span>          <span class="c"># Remove HTML characters</span>
+    <span class="n">s</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="nb">str</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">'</span><span class="se">\'</span><span class="s">'</span><span class="p">,</span> <span class="s">''</span><span class="p">)</span>               <span class="c"># Remove single quotes ' </span>
+    <span class="n">s</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="nb">str</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">'-'</span><span class="p">,</span> <span class="s">''</span><span class="p">)</span>                <span class="c"># Remove dashes -</span>
+    <span class="n">s</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="nb">str</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">r'[^a-zA-Z]'</span><span class="p">,</span> <span class="s">' '</span><span class="p">)</span>      <span class="c"># Remove non alpha characters</span>
+    <span class="n">s</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">s</span><span class="p">:</span> <span class="s">' '</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">split</span><span class="p">()))</span>  <span class="c"># Remove extra whitespae</span>
+    <span class="n">s</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="nb">str</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>                         <span class="c"># Remove whitespace at start and end</span>
+    <span class="n">s</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="nb">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">removeStopwords</span><span class="p">(</span><span class="n">x</span><span class="p">))</span> <span class="c"># Remove stopwords</span>
+    <span class="k">return</span> <span class="n">s</span>
+
+<span class="c"># Clean the reviews</span>
+<span class="n">df_train</span><span class="p">[</span><span class="s">'review'</span><span class="p">]</span> <span class="o">=</span> <span class="n">cleanText</span><span class="p">(</span><span class="n">df_train</span><span class="p">[</span><span class="s">'review'</span><span class="p">])</span>
+<span class="n">df_test</span><span class="p">[</span><span class="s">'review'</span><span class="p">]</span> <span class="o">=</span> <span class="n">cleanText</span><span class="p">(</span><span class="n">df_test</span><span class="p">[</span><span class="s">'review'</span><span class="p">])</span></code></pre></figure>
+
+<p>When we build the model later the <code class="highlighter-rouge">TfidfVectorizer</code> in <code class="highlighter-rouge">sklearn.feature_extraction.text</code> will be used to construct a TF-IDF matrix. This function is able to do the preprocessing of the text, I avoid doing that here because the TF-IDF matrix will need to be reconstructed for each iteration of the hyperparamter tuning process. By processing the documents before building the TF-IDF matrix we will avoid repeating this work.</p>
+
+<p>Finally, we separate the reviews and their classes into separate numpy arrays.</p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="c"># Separate into training and test data</span>
+<span class="n">X_train</span> <span class="o">=</span> <span class="n">df_train</span><span class="p">[</span><span class="s">'review'</span><span class="p">]</span>
+<span class="n">y_train</span> <span class="o">=</span> <span class="n">df_train</span><span class="p">[</span><span class="s">'class'</span><span class="p">]</span>
+<span class="n">X_test</span> <span class="o">=</span> <span class="n">df_test</span><span class="p">[</span><span class="s">'review'</span><span class="p">]</span>
+<span class="n">y_test</span> <span class="o">=</span> <span class="n">df_test</span><span class="p">[</span><span class="s">'class'</span><span class="p">]</span></code></pre></figure>
+
+<h2 id="the-model">The Model</h2>
+<p>Now that the data is cleaned, we can begin building the model. The model will consist of 3 parts:</p>
+
+<ul>
+  <li>Construct a matrix of term frequency–inverse document frequency (TF-IDF) features from the corpus of movie reviews</li>
+  <li>Select the features with the highest values for the chi-squared statistic from the training data</li>
+  <li>Train a linear model using modified-huber loss with stochastic gradient descent (SGD) learning</li>
+</ul>
+
+<p>The SGDClassifier will use modified-huber loss with an elasticnet penalty. The elasticnet penalty will allow a convex combination of L1 and L2 penalties. The SGDClassifier has a hyperparameter called <code class="highlighter-rouge">l1_ratio</code> that controls how much the L1 penalty is used. This will be one of the hyperparamters that will be tuned. This will allow the hyperparamter tuning to select between using L1 or L2 penalty or a combination of the two.</p>
+
+<p>A <a href="http://scikit-learn.org/stable/modules/generated/sklearn.pipeline.Pipeline.html" target="_blank">pipeline</a> will be used to make fitting and testing the model easier.</p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="kn">from</span> <span class="nn">sklearn.feature_extraction.text</span> <span class="kn">import</span> <span class="n">TfidfVectorizer</span>
+<span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="kn">import</span> <span class="n">SGDClassifier</span>
+<span class="kn">from</span> <span class="nn">sklearn.feature_selection.univariate_selection</span> <span class="kn">import</span> <span class="n">SelectPercentile</span><span class="p">,</span> <span class="n">chi2</span>
+<span class="kn">from</span> <span class="nn">sklearn.pipeline</span> <span class="kn">import</span> <span class="n">Pipeline</span>
+
+<span class="c"># The model</span>
+<span class="n">vectorizer</span> <span class="o">=</span> <span class="n">TfidfVectorizer</span><span class="p">(</span><span class="n">strip_accents</span><span class="o">=</span><span class="s">'unicode'</span><span class="p">)</span>
+<span class="n">kbest</span> <span class="o">=</span> <span class="n">SelectPercentile</span><span class="p">(</span><span class="n">chi2</span><span class="p">)</span>
+<span class="n">clf</span> <span class="o">=</span> <span class="n">SGDClassifier</span><span class="p">(</span><span class="n">loss</span><span class="o">=</span><span class="s">'modified_huber'</span><span class="p">,</span> <span class="n">penalty</span><span class="o">=</span><span class="s">'elasticnet'</span><span class="p">)</span>
+
+<span class="n">pipe</span> <span class="o">=</span> <span class="n">Pipeline</span><span class="p">([(</span><span class="s">'vec'</span><span class="p">,</span> <span class="n">vectorizer</span><span class="p">),</span>
+                 <span class="p">(</span><span class="s">'kbest'</span><span class="p">,</span> <span class="n">kbest</span><span class="p">),</span>
+                 <span class="p">(</span><span class="s">'clf'</span><span class="p">,</span> <span class="n">clf</span><span class="p">)])</span></code></pre></figure>
+
+<p>Before we begin the hyperparameter tuning process, we will train the model with the default parameters. The AUC score of the test data with the default hyperparameters is 0.9523. The ROC curve is plotted in Figure 1 below.</p>
+
+<figure style="width: 600px" class="figure">
+	<a name="Figure1"></a>
+	<img src="http://assets.steventhornton.ca/Hyperparameter_Tuning_with_hyperopt_in_Python/Figure1.png" srcset="http://assets.steventhornton.ca/Hyperparameter_Tuning_with_hyperopt_in_Python/Figure1.png 1x, http://assets.steventhornton.ca/Hyperparameter_Tuning_with_hyperopt_in_Python/Figure1%402x.png 2x" alt="ROC curve with default hyperparameter values on test data." width="600" height="400" />
+	<figcaption><b>Figure 1:</b> The ROC curve for the model when using the default parameter values give an AUC score of 0.952 on the held-out test data.
+	</figcaption>
+</figure>
+
+<h2 id="hyperparameter-tuning">Hyperparameter Tuning</h2>
+
+<p>We are now ready to set up hyperopt to optimize the ROC AUC. hyperopt works by minimizing an objective function and sampling parameter values from various distributions. Since the goal is to maximize the AUC score, we will have hyperopt minimize $1 - \text{AUC}$.</p>
+
+<p>10-fold cross-validation will be used in for hyperparamter tuning to avoid overfitting to the training data. For each iteration of hyperparamter tuning, the folds will be randomized, again to avoid overfitting to the 10-folds selected.</p>
+
+<p>Here we will tune 8 hyperparamters:</p>
+
+<table class="set-table">
+    <thead>
+        <tr>
+            <th>Parameter Name</th>
+            <th>Function</th>
+            <th>Description</th>
+            <th>Range</th>
+        </tr>
+    </thead>
+<tbody>
+</tbody>
+    <tr>
+        <td><code>ngram_range</code></td>
+        <td><code>TfidfVectorizer</code></td>
+        <td>The range of n-grams to use. <code>(1,1)</code> corresponds to only unigrams, and <code>(1,3)</code> would be unigrams, 2-grams and 3-grams.</td>
+        <td><code>(1,1)</code>, <code>(1,2)</code>, <code>(1,3)</code></td>
+    </tr>
+    <tr>
+        <td><code>min_df</code></td>
+        <td><code>TfidfVectorizer</code></td>
+        <td>The minimum number (or frequency) of documents a term must appear in to be included.</td>
+        <td>1, 2, 3, or 4 documents</td>
+    </tr>
+    <tr>
+        <td><code>max_df</code></td>
+        <td><code>TfidfVectorizer</code></td>
+        <td>The maximum number (or frequency) of documents a term must appear in to be included.</td>
+        <td>Uniformly distributed between 70% and 100%</td>
+    </tr>
+    <tr>
+        <td><code>sublinear_tf</code></td>
+        <td><code>TfidfVectorizer</code></td>
+        <td>Applies sublinear term-frequency scaling (i.e. <code>tf = 1 + log(tf)</code>)</td>
+        <td><code>True</code> or <code>False</code></td>
+    </tr>
+    <tr>
+        <td><code>percentile</code></td>
+        <td><code>SelectPercentile</code></td>
+        <td>The percentile score for the chi-squared statistic, any feature not in this percentile is not used</td>
+        <td>Uniformly distributed between 50% and 100%</td>
+    </tr>
+    <tr>
+        <td><code>alpha</code></td>
+        <td><code>SGDClassifier</code></td>
+        <td>The learning rate. The `SGDClassifier` documentation recommends this value be in the range $10^{-7}$. See http://scikit-learn.org/stable/modules/sgd.html#tips-on-practical-use</td>
+        <td>Log-uniformly distributed between $10^{-9}$ and $10^{-4}$</td>
+    </tr>
+    <tr>
+        <td><code>n_iter</code></td>
+        <td><code>SGDClassifier</code></td>
+        <td>Number of passes on the data, a value of <code>1e6/n_samples</code> is recommended.</td>
+        <td>Random integer between 20 and 80 that is divisible by 5.</td>
+    </tr>
+    <tr>
+        <td><code>l1_ratio</code></td>
+        <td><code>SGDClassifier</code></td>
+        <td>The elastic net mixing parameter. Penalty is <code>(1 - l1_ratio) * L2 + l1_ratio * L1</code>.</td>
+        <td>Uniform between 0 and 1</td>
+    </tr>
+</table>
+
+<p>hyperopt provides several functions for defining various distributions. A full list can be found <a href="https://github.com/hyperopt/hyperopt/wiki/FMin#21-parameter-expressions" target="_blank">here</a>. Each hyperparameter is sampled from a distribution. To define the parameter space a dictionary is used where they keys start with the name of the function in the pipeline, followed by a double underscore, then the name of the hyperparameter for that function. This allows us to use the <code class="highlighter-rouge">set_params</code> function of the pipeline easily. Each of the functions in hyperopt also requires a name, I have used the same names for simplicity.</p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="kn">from</span> <span class="nn">hyperopt</span> <span class="kn">import</span> <span class="n">hp</span>
+
+<span class="c"># Parameter search space</span>
+<span class="n">space</span> <span class="o">=</span> <span class="p">{}</span>
+
+<span class="c"># One of (1,1), (1,2), or (1,3)</span>
+<span class="n">space</span><span class="p">[</span><span class="s">'vec__ngram_range'</span><span class="p">]</span> <span class="o">=</span> <span class="n">hp</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="s">'vec__ngram_range'</span><span class="p">,</span> <span class="p">[(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="p">)])</span>
+
+<span class="c"># Random integer in [1,3]</span>
+<span class="n">space</span><span class="p">[</span><span class="s">'vec__min_df'</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span><span class="o">+</span><span class="n">hp</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="s">'vec__min_df'</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+
+<span class="c"># Uniform between 0.7 and 1</span>
+<span class="n">space</span><span class="p">[</span><span class="s">'vec__max_df'</span><span class="p">]</span> <span class="o">=</span> <span class="n">hp</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="s">'vec__max_df'</span><span class="p">,</span> <span class="mf">0.7</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span>
+
+<span class="c"># One of True or False</span>
+<span class="n">space</span><span class="p">[</span><span class="s">'vec__sublinear_tf'</span><span class="p">]</span> <span class="o">=</span> <span class="n">hp</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="s">'vec__sublinear_tf'</span><span class="p">,</span> <span class="p">[</span><span class="bp">True</span><span class="p">,</span> <span class="bp">False</span><span class="p">])</span>
+
+<span class="c"># Random number between 50 and 100</span>
+<span class="n">space</span><span class="p">[</span><span class="s">'kbest__percentile'</span><span class="p">]</span> <span class="o">=</span> <span class="n">hp</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="s">'kbest__percentile'</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+
+<span class="c"># Random number between 0 and 1</span>
+<span class="n">space</span><span class="p">[</span><span class="s">'clf__l1_ratio'</span><span class="p">]</span> <span class="o">=</span> <span class="n">hp</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="s">'clf__l1_ratio'</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span>
+
+<span class="c"># Log-uniform between 1e-9 and 1e-4</span>
+<span class="n">space</span><span class="p">[</span><span class="s">'clf__alpha'</span><span class="p">]</span> <span class="o">=</span> <span class="n">hp</span><span class="o">.</span><span class="n">loguniform</span><span class="p">(</span><span class="s">'clf__alpha'</span><span class="p">,</span> <span class="o">-</span><span class="mi">9</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="mi">10</span><span class="p">),</span> <span class="o">-</span><span class="mi">4</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="mi">10</span><span class="p">))</span>
+
+<span class="c"># Random integer in 20:5:80</span>
+<span class="n">space</span><span class="p">[</span><span class="s">'clf__n_iter'</span><span class="p">]</span> <span class="o">=</span> <span class="mi">20</span> <span class="o">+</span> <span class="mi">5</span><span class="o">*</span><span class="n">hp</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="s">'clf__n_iter'</span><span class="p">,</span> <span class="mi">12</span><span class="p">)</span></code></pre></figure>
+
+<p>Now that the hyperparaemter space has been defined we need to define an objective function for hyperopt to minimize. The objective function will start by randomly splitting the training data into 10 folds. The <code class="highlighter-rouge">KFold</code> function is used to ensure we get a new, random set of folds each time we call the objective function (otherwise we might overfit to the folds). The <code class="highlighter-rouge">cross_val_score</code> function with the <code class="highlighter-rouge">roc_auc</code> scoring metric is then called to run 10-fold cross-validation on the model. Since our goal is to maximize the ROC AUC, and hyperopt works by minimizing the objective function, we will return <code class="highlighter-rouge">1 - score.mean()</code> from the objective function. To significantly decrease the execution time, you can set the <code class="highlighter-rouge">n_jobs</code> parameter in the <code class="highlighter-rouge">cross_val_score</code> function.</p>
+
+<p>I will note that I am using several of the variables as global variables here. There are a few ways to avoid this, you could either reload the data each time the objective function is called, or you could use a generator so the function loads the data once. When I initially drafted the code for this article I used a generator, although things became more complicated than I wanted for the tutorial as hyperopt will not work with generators. You can make hyperopt work with generators by setting up a simple producer-consumer model between two functions, one which sends new hyperparameter values to the consumer, and then returns the new average loss.</p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">cross_val_score</span>
+<span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">KFold</span>
+
+<span class="k">def</span> <span class="nf">objective</span><span class="p">(</span><span class="n">params</span><span class="p">):</span>
+    <span class="n">pipe</span><span class="o">.</span><span class="n">set_params</span><span class="p">(</span><span class="o">**</span><span class="n">params</span><span class="p">)</span>
+    <span class="n">shuffle</span> <span class="o">=</span> <span class="n">KFold</span><span class="p">(</span><span class="n">n_splits</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="n">score</span> <span class="o">=</span> <span class="n">cross_val_score</span><span class="p">(</span><span class="n">pipe</span><span class="p">,</span> <span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">cv</span><span class="o">=</span><span class="n">shuffle</span><span class="p">,</span> <span class="n">scoring</span><span class="o">=</span><span class="s">'roc_auc'</span><span class="p">,</span> <span class="n">n_jobs</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="k">return</span> <span class="mi">1</span><span class="o">-</span><span class="n">score</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span></code></pre></figure>
+
+<p>We are now ready to use hyperopt to find optimal hyperparameter values. Here I will use the <code class="highlighter-rouge">fmin</code> function from hyperopt. I will also use the <code class="highlighter-rouge">Trials</code> object to store information about each iteration. This is useful for processing the information from each iteration afterwards. Here I have set it to run for 10 iterations for illustrative purposes.</p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="kn">from</span> <span class="nn">hyperopt</span> <span class="kn">import</span> <span class="n">fmin</span><span class="p">,</span> <span class="n">tpe</span><span class="p">,</span> <span class="n">Trials</span>
+
+<span class="c"># The Trials object will store details of each iteration</span>
+<span class="n">trials</span> <span class="o">=</span> <span class="n">Trials</span><span class="p">()</span>
+
+<span class="c"># Run the hyperparameter search using the tpe algorithm</span>
+<span class="n">best</span> <span class="o">=</span> <span class="n">fmin</span><span class="p">(</span><span class="n">objective</span><span class="p">,</span>
+            <span class="n">space</span><span class="p">,</span>
+            <span class="n">algo</span><span class="o">=</span><span class="n">tpe</span><span class="o">.</span><span class="n">suggest</span><span class="p">,</span>
+            <span class="n">max_evals</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+            <span class="n">trials</span><span class="o">=</span><span class="n">trials</span><span class="p">)</span></code></pre></figure>
+
+<p>After hyperopt is done, you can train the model using the entire training set and test it on the test data. Note the use of the <code class="highlighter-rouge">space_eval</code> function. You <strong>must</strong> use this to get the optimal hyperparameter values. The <code class="highlighter-rouge">best</code> dictionary might look like it contains parameters, but it simply contains the encoding used by hyperopt to get the parameter values from the <code class="highlighter-rouge">space</code> dictionary.</p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="kn">from</span> <span class="nn">hyperopt</span> <span class="kn">import</span> <span class="n">space_eval</span>
+
+<span class="c"># Get the values of the optimal parameters</span>
+<span class="n">best_params</span> <span class="o">=</span> <span class="n">space_eval</span><span class="p">(</span><span class="n">space</span><span class="p">,</span> <span class="n">best</span><span class="p">)</span>
+
+<span class="c"># Fit the model with the optimal hyperparamters</span>
+<span class="n">pipe</span><span class="o">.</span><span class="n">set_params</span><span class="p">(</span><span class="o">**</span><span class="n">best_params</span><span class="p">)</span>
+<span class="n">pipe</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">);</span>
+
+<span class="c"># Score with the test data</span>
+<span class="n">y_score</span> <span class="o">=</span> <span class="n">pipe</span><span class="o">.</span><span class="n">predict_proba</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span>
+<span class="n">auc_score</span> <span class="o">=</span> <span class="n">roc_auc_score</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">y_score</span><span class="p">[:,</span><span class="mi">1</span><span class="p">])</span></code></pre></figure>
+
+<h2 id="results">Results</h2>
+
+<p>Running this for 1000 iterations found an optimal training AUC score of 0.9672 corresponding to a test AUC of 0.9621. Using 1000 iterations was easily overkill as the best training AUC score found in the first 100 iterations was 0.9662, so little was gained by running the other 900 iterations. I ran the hyperparameter search on an AWS EC2 c4.4xlarge instance with the <code class="highlighter-rouge">n_jobs</code> parameter for <code class="highlighter-rouge">cross_val_score</code> set to 10 (i.e. each fold is trained in parallel). Execution took just under 15 hours. The ROC curve corresponding to a training AUC score of 0.9672 along with the ROC curve with no hyperparameter tuning can be seen in Figure 2 below.</p>
+
+<figure style="width: 600px" class="figure">
+	<a name="Figure2"></a>
+	<img src="http://assets.steventhornton.ca/Hyperparameter_Tuning_with_hyperopt_in_Python/Figure2.png" srcset="http://assets.steventhornton.ca/Hyperparameter_Tuning_with_hyperopt_in_Python/Figure2.png 1x, http://assets.steventhornton.ca/Hyperparameter_Tuning_with_hyperopt_in_Python/Figure2%402x.png 2x" alt="ROC curve with default and tuned hyperparameter values on test data." width="600" height="400" />
+	<figcaption><b>Figure 2:</b> The ROC curve for the model when using the default and optimized hyperparameter values give an AUC score of 0.952 and 0.962 respectively on the held-out test data.
+	</figcaption>
+</figure>
+
+<p>The <code class="highlighter-rouge">parameter_values.csv</code> file available on the <a href="https://github.com/steventhornton/Hyperparameter-Tuning-with-hyperopt-in-Python" target="_blank">GitHub repository</a> that complements this post contains the parameter values used at each of the 1000 iterations. Plotting each of these parameter values against the iteration gives some interesting results. Figure 3 shows the hyperparameter values that hyperopt sampled at each iteration. Many of the hyperparameters converge to regions surrounding their optimal values within the first 200 iterations. In the first 100 iterations, all of the hyperparameters appear to be randomly sampled before things begin to converge.</p>
+
+<figure style="width: 800px" class="figure">
+	<img src="http://assets.steventhornton.ca/Hyperparameter_Tuning_with_hyperopt_in_Python/Figure3.png" srcset="http://assets.steventhornton.ca/Hyperparameter_Tuning_with_hyperopt_in_Python/Figure3.png 1x, http://assets.steventhornton.ca/Hyperparameter_Tuning_with_hyperopt_in_Python/Figure3%402x.png 2x" alt="" width="800" height="540" />
+	<figcaption><b>Figure 3:</b> Hyperparameter values sampled during hyperparameter optimization for 1000 iterations.
+	</figcaption>
+</figure>
+
+<h2 id="final-thoughts">Final Thoughts</h2>
+<p>Overall, hyperopt provides a nice way to perform automated hyperparameter tuning without the cost associated with a grid search. The optimal hyperparameters should be better than what a randomized search will find as the hyperparamters seem to converge to values that result in improved results. Using hyperopt is fairly easy once understand how it is set up. Although hyperopt will converge to optimal values for the hyperparameters, it is still important to have a good understanding of the expected range of values for your hyperparamters.</p>
+
+</div>
+
+
+  </div>
+  <footer>
+  <div class="container">
+    <ul class="social-media-icons">
+      
+      <li><a href="https://www.linkedin.com/in/stevenethornton" class="social-media-icons"><i class="fa fa-2x fa-linkedin-square" aria-hidden="true"></i></a></li>
+      
+      
+      <li><a href="mailto:steven@steventhornton.ca" class="social-media-icons"><i class="fa fa-2x fa-envelope-square" aria-hidden="true"></i></a></li>
+      
+        
+      <li><a href="https://twitter.com/stevenethornton" class="social-media-icons"><i class="fa fa-2x fa-twitter-square" aria-hidden="true"></i></a></li>
+      
+        
+      <li><a href="https://github.com/steventhornton" class="social-media-icons"><i class="fa fa-2x fa-github-square" aria-hidden="true"></i></a></li>
+      
+      <li>
+    </ul>
+  </div>
+</footer>
+
+</body>
+</html>

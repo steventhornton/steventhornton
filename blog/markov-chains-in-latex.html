@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-86308175-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-86308175-1');
+</script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<title>Steven Thornton</title>
+<meta name="description" content="Steven Thornton">
+<meta name="keywords" content="">
+<!-- Twitter Card and Open Graph tags -->
+<meta name="twitter:title" content="Markov Chains in LaTeX &#8211; ">
+<meta name="twitter:description" content="Steven Thornton">
+<meta name="twitter:creator" content="@stevenethornton">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image:src" content="http://www.steventhornton.ca/images/logo.png">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Markov Chains in LaTeX &#8211; ">
+<meta property="og:description" content="Steven Thornton">
+<meta property="og:url" content="http://www.steventhornton.ca/blog/markov-chains-in-latex.html">
+<meta property="og:site_name" content="">
+
+<!-- MathJax -->
+
+  <script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    showMathMenu: false,
+    showProcessingMessages: false,
+    "HTML-CSS": {
+      scale: 90
+    },
+    tex2jax: {
+      inlineMath: [ ['$','$'] ],
+      displayMath: [ ['$$','$$'] ],
+      processEscapes: true,
+    }
+  });
+</script>
+<script type="text/javascript"
+        src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS_HTML">
+</script>
+
+
+<script src="https://code.jquery.com/jquery-3.4.0.min.js" integrity="sha256-BJeo0qm959uMBGb65z40ejJYGSgR7REI4+CW1fNKwOg=" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+<link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+
+<!-- Webmaster Tools verfication -->
+
+
+
+
+
+<link rel="canonical" href="http://www.steventhornton.ca/blog/markov-chains-in-latex.html">
+<link href="http://www.steventhornton.ca/feed.xml" type="application/atom+xml" rel="alternate" title=" Feed">
+
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<link href="https://fonts.googleapis.com/css?family=Zilla+Slab" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+
+<link rel="stylesheet" href="http://www.steventhornton.ca/css/main.css" type="text/css" />
+
+
+</head>
+<body>
+  <div class="container-fullwidth navbar-dark bg-dark nav-container">
+  <div class="container">
+    <nav class="navbar navbar-expand-lg  justify-content-end">
+      <a class="navbar-brand mr-auto" href="http://www.steventhornton.ca">Steven Thornton</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse flex-grow-0" id="navbarSupportedContent">
+        <ul class="navbar-nav text-right">
+          <li class="nav-item ">
+            <a class="nav-link" href="http://www.steventhornton.ca">Home</a>
+          </li>
+          <li class="nav-item ">
+            <a class="nav-link" href="http://www.steventhornton.ca/blog">Blog</a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+  </div>
+</div>
+
+  <div class="container">
+  <h2>Markov Chains in LaTeX</h2>
+<p class="post-date">October 25, 2016</p>
+<div class="post">
+<p>The TikZ package is a great tool for generating publication quality illustrations of Markov chains in LaTeX. This article presents 3 examples along with the complete LaTeX source. At each step, links are provided to the LaTeX source on <a href="https://www.overleaf.com/" target="_blank">Overleaf</a> where you can view and edit the examples.</p>
+
+<h2 id="example-1-a-simple-weather-model"><strong>Example 1:</strong> A Simple Weather Model</h2>
+<p>To busy to read the explanation? The final LaTeX source for this example can be found on <a href="https://www.overleaf.com/read/yrwnwnzstvbf" target="_blank">Overleaf</a>.</p>
+
+<p>The 2-state weather model is often used as a simple introductory model to Markov chains. This model is a discrete-time Markov chain consisting of two states: sunny and rainy. On a given day, the probability of it raining or being sunny the following day is determined by the current days weather. In this example we will create an illustration of this Markov chain.</p>
+
+<p>To get started, we must load the TikZ package:</p>
+
+<figure class="highlight"><pre><code class="language-latex" data-lang="latex"><span class="k">\usepackage</span><span class="p">{</span>tikz<span class="p">}</span></code></pre></figure>
+
+<p>For our Markov chain diagrams we will use the <code class="highlighter-rouge">automata</code> and <code class="highlighter-rouge">positioning</code> libraries within TikZ, these are loaded using the <code class="highlighter-rouge">\usetikzlibrary</code>  command:</p>
+
+<figure class="highlight"><pre><code class="language-latex" data-lang="latex"><span class="k">\usetikzlibrary</span><span class="p">{</span>automata, positioning<span class="p">}</span></code></pre></figure>
+
+<p>The <code class="highlighter-rouge">tikzpicture</code> environment is where our diagram will be built:</p>
+
+<figure class="highlight"><pre><code class="language-latex" data-lang="latex"><span class="nt">\begin{tikzpicture}</span>
+    <span class="c">% Drawing goes here</span>
+<span class="nt">\end{tikzpicture}</span></code></pre></figure>
+
+<p>Drawing the Markov chain is broken into two steps:</p>
+<ul>
+  <li>draw the states (nodes), and</li>
+  <li>draw arrows connecting the states.</li>
+</ul>
+
+<h3 id="drawing-the-states">Drawing the States</h3>
+<p>Within the <code class="highlighter-rouge">tikzpicture</code> environment, states can be added using the <code class="highlighter-rouge">\node</code>  command:</p>
+
+<figure class="highlight"><pre><code class="language-latex" data-lang="latex"><span class="k">\node</span><span class="na">[options]</span> (id) <span class="p">{</span>text<span class="p">}</span>;</code></pre></figure>
+
+<p>For each node, you must specify a unique <code class="highlighter-rouge">id</code>. This id can be any combination of letters and numbers and will be used later to identify the node when connecting the states with arrows. Adding text to a node is optional, although if you chose not to you must use empty curly brackets <code class="highlighter-rouge">{}</code> . To add the node for the <em>Sunny</em> state to our diagram we use:</p>
+
+<figure class="highlight"><pre><code class="language-latex" data-lang="latex"><span class="k">\node</span><span class="na">[state]</span> (s) <span class="p">{</span>Sunny<span class="p">}</span>;</code></pre></figure>
+
+<p>Here <code class="highlighter-rouge">s</code> is the label for our node. The <code class="highlighter-rouge">state</code> option controls the appearance of the node. Next, we will draw the <em>Rainy</em> state:</p>
+
+<figure class="highlight"><pre><code class="language-latex" data-lang="latex"><span class="k">\node</span><span class="na">[state, right=of s]</span> (r) <span class="p">{</span>Rainy<span class="p">}</span>;</code></pre></figure>
+
+<p>The option <code class="highlighter-rouge">right=of s</code> will place this node to the right of the Sunny node. If we look at our Markov chain now we will see two states next to one another with no arrows connecting them.</p>
+
+<figure style="width: 300px" class="figure">
+    <a name="Figure1"></a>
+    <img src="http://assets.steventhornton.ca/Markov_Chains_in_LaTeX/SunnyRainy1.png" srcset="http://assets.steventhornton.ca/Markov_Chains_in_LaTeX/SunnyRainy1.png 1x, http://assets.steventhornton.ca/Markov_Chains_in_LaTeX/SunnyRainy1%402x.png 2x" alt="Sunny and Rainy states." width="300" height="110" />
+    <figcaption><b>Figure 1:</b> View LaTeX source on <a href="https://www.overleaf.com/read/xvrsmjkppybt" target="_blank">Overleaf</a>.
+    </figcaption>
+</figure>
+
+<h3 id="connecting-the-states">Connecting the States</h3>
+<p>The <code class="highlighter-rouge">\draw</code> command is used to add arrows to our Markov chain representing transitions between states. The <code class="highlighter-rouge">\draw</code> command takes the form</p>
+
+<figure class="highlight"><pre><code class="language-latex" data-lang="latex"><span class="k">\draw</span><span class="na">[options]</span>
+    (startId1) edge[options] node <span class="p">{</span>edge text<span class="p">}</span> (endId1)
+    (startId2) edge[options] node <span class="p">{</span>edge text<span class="p">}</span> (endId2)
+    ...
+    (startIdN) edge[options] node <span class="p">{</span>edge text<span class="p">}</span> (endIdN);</code></pre></figure>
+
+<p>where the start and end ids reference nodes previously defined. For our chain we will use the option <code class="highlighter-rouge">every loop, bend right</code> with the <code class="highlighter-rouge">\draw</code> command. This will draw arrows that bend to the right (from the perspective of the node at the starting end of the arrow) between the nodes. To specify that we want arrows connecting the sunny node to the rainy node and the rainy node to the sunny node we use</p>
+
+<figure class="highlight"><pre><code class="language-latex" data-lang="latex">(s) edge node <span class="p">{}</span> (r)
+(r) edge node <span class="p">{}</span> (s);</code></pre></figure>
+
+<p>after the draw command. Note that no options have been used here for either arrow.</p>
+
+<p>Putting everything together, the following LaTeX markup will create an illustration of the Markov chain consisting of 2-states, sunny and rainy, with curved arrows showing the transitions between the states.
+rainy node to the sunny node we use</p>
+
+<figure class="highlight"><pre><code class="language-latex" data-lang="latex"><span class="k">\documentclass</span><span class="p">{</span>standalone<span class="p">}</span>
+
+<span class="k">\usepackage</span><span class="p">{</span>tikz<span class="p">}</span>
+<span class="k">\usetikzlibrary</span><span class="p">{</span>automata,positioning<span class="p">}</span>
+
+<span class="nt">\begin{document}</span>
+    <span class="nt">\begin{tikzpicture}</span>
+        <span class="c">% Draw the states</span>
+        <span class="k">\node</span><span class="na">[state]</span>             (s) <span class="p">{</span>Sunny<span class="p">}</span>;
+        <span class="k">\node</span><span class="na">[state, right=of s]</span> (r) <span class="p">{</span>Rainy<span class="p">}</span>;
+
+        <span class="c">% Connect the states with arrows</span>
+        <span class="k">\draw</span><span class="na">[every loop]</span>
+            (s) edge[bend right] node <span class="p">{}</span> (r)
+            (r) edge[bend right] node <span class="p">{}</span> (s);
+    <span class="nt">\end{tikzpicture}</span>
+<span class="nt">\end{document}</span></code></pre></figure>
+
+<p>Now our diagram is starting to look a little better</p>
+<figure style="width: 300px" class="figure">
+    <a name="Figure2"></a>
+    <img src="http://assets.steventhornton.ca/Markov_Chains_in_LaTeX/SunnyRainy2.png" srcset="http://assets.steventhornton.ca/Markov_Chains_in_LaTeX/SunnyRainy2.png 1x, http://assets.steventhornton.ca/Markov_Chains_in_LaTeX/SunnyRainy2%402x.png 2x" width="300" height="110" />
+    <figcaption><b>Figure 2:</b> Markov chain with arrows to illustrate transitions between states. View LaTeX source on <a href="https://www.overleaf.com/read/tpjzgbgcsgtm" target="_blank">Overleaf</a>.
+    </figcaption>
+</figure>
+
+<h3 id="adding-more-arrows">Adding More Arrows</h3>
+<p>Suppose we wanted to add arrows to indicate that at each time step there is some probability of remaining in the same state. This can be done by adding arrows that connect nodes to themselves. To do this for each state we add</p>
+
+<figure class="highlight"><pre><code class="language-latex" data-lang="latex">(s) edge[loop above] node <span class="p">{}</span> (s)
+(r) edge[loop above] node <span class="p">{}</span> (r)</code></pre></figure>
+
+<p>after the <code class="highlighter-rouge">\draw</code> command. The <code class="highlighter-rouge">loop above</code> option draws the arrow above the state.</p>
+<figure style="width: 300px" class="figure">
+    <a name="Figure3"></a>
+    <img src="http://assets.steventhornton.ca/Markov_Chains_in_LaTeX/SunnyRainy3.png" srcset="http://assets.steventhornton.ca/Markov_Chains_in_LaTeX/SunnyRainy3.png 1x, http://assets.steventhornton.ca/Markov_Chains_in_LaTeX/SunnyRainy3%402x.png 2x" width="300" height="174" />
+    <figcaption><b>Figure 3:</b> View LaTeX source on <a href="https://www.overleaf.com/read/ktxdcmrjvfrk" target="_blank">Overleaf</a>.
+    </figcaption>
+</figure>
+
+<h3 id="adding-labels">Adding Labels</h3>
+<p>The next thing we may want to add to our diagram is labels for the transition probabilities between states. This can be done by adding text between the curly brackets for each arrow. You can use inline math for the labels as well if you want to use symbols or expressions. Our states will now take the form:</p>
+
+<figure class="highlight"><pre><code class="language-latex" data-lang="latex">(s) edge[bend right] node <span class="p">{</span>0.6<span class="p">}</span> (r)
+(r) edge[bend right] node <span class="p">{</span>0.7<span class="p">}</span> (s)
+(s) edge[loop above] node <span class="p">{</span>0.4<span class="p">}</span> (s)
+(r) edge[loop above] node <span class="p">{</span>0.3<span class="p">}</span> (r);</code></pre></figure>
+
+<p>which produces the image</p>
+<figure style="width: 300px" class="figure">
+    <a name="Figure4"></a>
+    <img src="http://assets.steventhornton.ca/Markov_Chains_in_LaTeX/SunnyRainy4.png" srcset="http://assets.steventhornton.ca/Markov_Chains_in_LaTeX/SunnyRainy4.png 1x, http://assets.steventhornton.ca/Markov_Chains_in_LaTeX/SunnyRainy4%402x.png 2x" width="300" height="203" />
+    <figcaption><b>Figure 4:</b> We need to fix the labels. View LaTeX source on  <a href="https://www.overleaf.com/read/qmhvcxbvxkmm" target="_blank">Overleaf</a>.
+    </figcaption>
+</figure>
+
+<p>Clearly we need to correct the positioning of the labels. To do this we will add an option to the arrows from sunny to rainy and rainy to sunny that controls where the labels are positioned relative to the arrows.</p>
+
+<figure class="highlight"><pre><code class="language-latex" data-lang="latex">(s) edge[bend right, auto=left]  node <span class="p">{</span>0.6<span class="p">}</span> (r)
+(r) edge[bend right, auto=right] node <span class="p">{</span>0.7<span class="p">}</span> (s)
+(s) edge[loop above]             node <span class="p">{</span>0.4<span class="p">}</span> (s)
+(r) edge[loop above]             node <span class="p">{</span>0.3<span class="p">}</span> (r);</code></pre></figure>
+
+<p>Why is one <code class="highlighter-rouge">auto=left</code> and the other <code class="highlighter-rouge">auto=right</code>? Every option that we specify is from the point of view of the start of the arrow.</p>
+
+<figure style="width: 300px" class="figure">
+    <a name="Figure5"></a>
+    <img src="http://assets.steventhornton.ca/Markov_Chains_in_LaTeX/SunnyRainy5.png" srcset="http://assets.steventhornton.ca/Markov_Chains_in_LaTeX/SunnyRainy5.png 1x, http://assets.steventhornton.ca/Markov_Chains_in_LaTeX/SunnyRainy5%402x.png 2x" width="300" height="203" />
+    <figcaption><b>Figure 5:</b> View LaTeX source on <a href="https://www.overleaf.com/read/twypxsynxftf" target="_blank">Overleaf</a>.
+    </figcaption>
+</figure>
+
+<p>In its current state, this would probably be appropriate for a research article or report. If you need a nice visual for a slideshow, video or website, you may consider some additional styling.</p>
+
+<h3 id="making-it-look-amazing">Making it Look Amazing</h3>
+<p>Let’s add some color and adjust the styling of a little bit to make this perfect for presentations. To start, we will change the colors of the nodes. Some additional options are used with the <code class="highlighter-rouge">\node</code> command. There are ways to define options that can be used for all nodes but I will wait until the next example to get into that.</p>
+
+<figure class="highlight"><pre><code class="language-latex" data-lang="latex"><span class="k">\node</span>[state,
+      text=yellow,
+      draw=none,
+      fill=gray!50!black] (s) <span class="p">{</span>Sunny<span class="p">}</span>;
+<span class="k">\node</span>[state,
+      right=of s,
+      text=blue!30!white, 
+      draw=none, 
+      fill=gray!50!black] (r) <span class="p">{</span>Rainy<span class="p">}</span>;</code></pre></figure>
+
+<ul>
+  <li>The <code class="highlighter-rouge">text</code> option controls the color of the text.</li>
+  <li>The <code class="highlighter-rouge">draw</code> option controls the style of the border. <code class="highlighter-rouge">draw=none</code> will prevent the border from being drawn.</li>
+  <li>The <code class="highlighter-rouge">fill</code> option is used to set the background color for the node. Here I have used <code class="highlighter-rouge">gray!50!black</code> which means a mix of 50% gray and 50% black.</li>
+</ul>
+
+<p>The figure is starting to look more colorful</p>
+
+<figure style="width: 300px" class="figure">
+    <a name="Figure6"></a>
+    <img src="http://assets.steventhornton.ca/Markov_Chains_in_LaTeX/SunnyRainy6.png" srcset="http://assets.steventhornton.ca/Markov_Chains_in_LaTeX/SunnyRainy6.png 1x, http://assets.steventhornton.ca/Markov_Chains_in_LaTeX/SunnyRainy6%402x.png 2x" width="300" height="203" />
+    <figcaption><b>Figure 6:</b> View LaTeX source on <a href="https://www.overleaf.com/read/qfxxctnjbwtc" target="_blank">Overleaf</a>.
+    </figcaption>
+</figure>
+
+<p>The nodes can be moved further apart to avoid appearing crowded by changing <code class="highlighter-rouge">right=of s</code> to <code class="highlighter-rouge">right=2cm of s</code>. This will place the nodes 2cm way from each other.</p>
+
+<p>Next, the color, width and arrow head of the arrows will be adjusted. This is done using options for the <code class="highlighter-rouge">\draw</code> command.</p>
+
+<figure class="highlight"><pre><code class="language-latex" data-lang="latex"><span class="k">\draw</span>[every loop,
+      auto=right,
+      line width=1mm,
+      &gt;=latex,
+      draw=orange,
+      fill=orange]</code></pre></figure>
+
+<ul>
+  <li><code class="highlighter-rouge">line width</code> sets the width of the arrows.</li>
+  <li><code class="highlighter-rouge">&gt;=latex</code> controls the style of the arrow head where latex  is one of the allowed styles (see <a href="https://stuff.mit.edu/afs/athena/contrib/tex-contrib/beamer/pgf-1.01/doc/generic/pgf/version-for-tex4ht/en/pgfmanualse24.html" target="_blank">https://stuff.mit.edu/afs/athena/contrib/tex-contrib/beamer/pgf-1.01/doc/generic/pgf/version-for-tex4ht/en/pgfmanualse24.html</a> for more styles).</li>
+  <li><code class="highlighter-rouge">draw</code> and <code class="highlighter-rouge">fill</code> control the color of the arrow.</li>
+</ul>
+
+<p>The font used for the diagram can be changed to a sans-serif font by adding the <code class="highlighter-rouge">font=\sffamily</code> option to the <code class="highlighter-rouge">\begin{tikzpicture}</code> command.</p>
+
+<figure class="highlight"><pre><code class="language-latex" data-lang="latex"><span class="k">\documentclass</span><span class="p">{</span>standalone<span class="p">}</span>
+
+<span class="k">\usepackage</span><span class="p">{</span>tikz<span class="p">}</span>
+<span class="k">\usetikzlibrary</span><span class="p">{</span>automata, positioning<span class="p">}</span>
+
+<span class="nt">\begin{document}</span>
+    <span class="nt">\begin{tikzpicture}</span>[font=<span class="k">\sffamily</span>]
+
+    <span class="c">% Add the states</span>
+    <span class="k">\node</span>[state,
+          text=yellow,
+          draw=none,
+          fill=gray!50!black] (s) <span class="p">{</span>Sunny<span class="p">}</span>;
+    <span class="k">\node</span>[state,
+          right=2cm of s,
+          text=blue!30!white, 
+          draw=none, 
+          fill=gray!50!black] (r) <span class="p">{</span>Rainy<span class="p">}</span>;
+
+    <span class="c">% Connect the states with arrows</span>
+    <span class="k">\draw</span>[every loop,
+          auto=right,
+          line width=1mm,
+          &gt;=latex,
+          draw=orange,
+          fill=orange]
+        (s) edge[bend right, auto=left]  node <span class="p">{</span>0.6<span class="p">}</span> (r)
+        (r) edge[bend right, auto=right] node <span class="p">{</span>0.7<span class="p">}</span> (s)
+        (s) edge[loop above]             node <span class="p">{</span>0.4<span class="p">}</span> (s)
+        (r) edge[loop above]             node <span class="p">{</span>0.3<span class="p">}</span> (r);
+   <span class="nt">\end{tikzpicture}</span>
+<span class="nt">\end{document}</span></code></pre></figure>
+
+<p>This produces the figure</p>
+
+<figure style="width: 300px" class="figure">
+    <a name="Figure7"></a>
+    <img src="http://assets.steventhornton.ca/Markov_Chains_in_LaTeX/SunnyRainy7.png" srcset="http://assets.steventhornton.ca/Markov_Chains_in_LaTeX/SunnyRainy7.png 1x, http://assets.steventhornton.ca/Markov_Chains_in_LaTeX/SunnyRainy7%402x.png 2x" width="300" height="170" />
+    <figcaption><b>Figure 7:</b> View LaTeX source on <a href="https://www.overleaf.com/read/rhhqszhvppcq" target="_blank">Overleaf</a>.
+    </figcaption>
+</figure>
+
+<h2 id="example-2-bull-bear-stagnant-markov-chain"><strong>Example 2:</strong> Bull-Bear-Stagnant Markov Chain</h2>
+
+<p>In this example we will be creating a diagram of a three-state Markov chain where all states are connected. We will arrange the nodes in an equilateral triangle. In the previous example, the rainy node was positioned using <code class="highlighter-rouge">right=of s</code>. In this example we will use absolute position where we specify where we want the node to be. This uses the standard cartesian coordinate system for the positioning of the nodes.</p>
+
+<figure class="highlight"><pre><code class="language-latex" data-lang="latex"><span class="k">\documentclass</span><span class="p">{</span>standalone<span class="p">}</span>
+
+<span class="k">\usepackage</span><span class="p">{</span>tikz<span class="p">}</span>
+<span class="k">\usetikzlibrary</span><span class="p">{</span>automata, positioning<span class="p">}</span>
+
+<span class="nt">\begin{document}</span>
+    <span class="nt">\begin{tikzpicture}</span>[font=<span class="k">\sffamily</span>]
+
+        <span class="c">% Setup the style for the states</span>
+        <span class="k">\tikzset</span><span class="p">{</span>node style/.style=<span class="p">{</span>state, 
+                                    minimum width=2cm,
+                                    line width=1mm,
+                                    fill=gray!20!white<span class="p">}}</span>
+
+        <span class="c">% Draw the states</span>
+        <span class="k">\node</span><span class="na">[node style]</span> at (0, 0)     (bull)     <span class="p">{</span>Bull<span class="p">}</span>;
+        <span class="k">\node</span><span class="na">[node style]</span> at (6, 0)     (bear)     <span class="p">{</span>Bear<span class="p">}</span>;
+        <span class="k">\node</span><span class="na">[node style]</span> at (3, -5.196) (stagnant) <span class="p">{</span>Stagnant<span class="p">}</span>;
+
+        <span class="c">% Connect the states with arrows</span>
+        <span class="k">\draw</span>[every loop,
+              auto=right,
+              line width=1mm,
+              &gt;=latex,
+              draw=orange,
+              fill=orange]
+            (bull)     edge[bend right=20]            node <span class="p">{</span>0.1<span class="p">}</span> (stagnant)
+            (bull)     edge[bend right=20, auto=left] node <span class="p">{</span>0.2<span class="p">}</span> (bear)
+            (bear)     edge[bend right=20]            node <span class="p">{</span>0.3<span class="p">}</span> (bull)
+            (bear)     edge[bend right=20, auto=left] node <span class="p">{</span>0.4<span class="p">}</span> (stagnant)
+            (stagnant) edge[bend right=20]            node <span class="p">{</span>0.2<span class="p">}</span> (bear)
+            (stagnant) edge[bend right=20, auto=left] node <span class="p">{</span>0.6<span class="p">}</span> (bull);
+    <span class="nt">\end{tikzpicture}</span>
+<span class="nt">\end{document}</span></code></pre></figure>
+
+<figure style="width: 400px" class="figure">
+    <a name="Figure8"></a>
+    <img src="http://assets.steventhornton.ca/Markov_Chains_in_LaTeX/BullBearStagnant.png" srcset="http://assets.steventhornton.ca/Markov_Chains_in_LaTeX/BullBearStagnant.png 1x, http://assets.steventhornton.ca/Markov_Chains_in_LaTeX/BullBearStagnant%402x.png 2x" width="400" height="366" />
+    <figcaption><b>Figure 8:</b> View LaTeX source on <a href="https://www.overleaf.com/read/wnfjgzwkyzrn" target="_blank">Overleaf</a>.
+    </figcaption>
+</figure>
+
+<h2 id="example-3-a-phase-type-mortality-model"><strong>Example 3:</strong> A Phase-Type Mortality Model</h2>
+
+<p>This example comes from a mortality model that is based on a multi-state Markov chain. If you are interested in the details you can read the paper this model originates from here: <a href="https://www.tandfonline.com/doi/abs/10.1080/10920277.2007.10597486" target="_blank">Markov Aging Process and Phase-Type Law of Mortality</a>.</p>
+
+<figure class="highlight"><pre><code class="language-latex" data-lang="latex"><span class="k">\documentclass</span><span class="p">{</span>standalone<span class="p">}</span>
+
+<span class="k">\usepackage</span><span class="p">{</span>tikz<span class="p">}</span>
+<span class="k">\usetikzlibrary</span><span class="p">{</span>automata, positioning<span class="p">}</span>
+
+<span class="nt">\begin{document}</span>
+    <span class="nt">\begin{tikzpicture}</span>
+        <span class="c">% Setup the style for the states</span>
+        <span class="k">\tikzset</span><span class="p">{</span>node style/.style=<span class="p">{</span>state, 
+                                    fill=gray!20!white,
+                                    rectangle<span class="p">}}</span>
+
+        <span class="k">\node</span><span class="na">[node style]</span>               (I)   <span class="p">{</span>I<span class="p">}</span>;
+        <span class="k">\node</span><span class="na">[node style, right=of I]</span>   (II)  <span class="p">{</span>II<span class="p">}</span>;
+        <span class="k">\node</span><span class="na">[node style, right=of II]</span>  (III) <span class="p">{</span>III<span class="p">}</span>;
+        <span class="k">\node</span><span class="na">[node style, right=of III]</span> (IV)  <span class="p">{</span>IV<span class="p">}</span>;
+        <span class="k">\node</span><span class="na">[node style, right=of IV]</span>  (5)   <span class="p">{</span>5<span class="p">}</span>;
+        <span class="k">\node</span><span class="na">[draw=none,  right=of 5]</span>   (5-n) <span class="p">{$</span><span class="nv">\cdots</span><span class="p">$}</span>;
+        <span class="k">\node</span><span class="na">[node style, right=of 5-n]</span> (n)   <span class="p">{$</span><span class="nb">n</span><span class="p">$}</span>;
+
+        <span class="c">% Draw empty nodes so we can connect them with arrows</span>
+        <span class="k">\node</span><span class="na">[draw=none, above=of I]</span>   (a)    <span class="p">{}</span>;
+        <span class="k">\node</span><span class="na">[draw=none, below=of I]</span>   (qI)   <span class="p">{}</span>;
+        <span class="k">\node</span><span class="na">[draw=none, below=of II]</span>  (qII)  <span class="p">{}</span>;
+        <span class="k">\node</span><span class="na">[draw=none, below=of III]</span> (qIII) <span class="p">{}</span>;
+        <span class="k">\node</span><span class="na">[draw=none, below=of IV]</span>  (qIV)  <span class="p">{}</span>;
+        <span class="k">\node</span><span class="na">[draw=none, below=of 5]</span>   (q5)   <span class="p">{}</span>;
+        <span class="k">\node</span><span class="na">[draw=none, below=of n]</span>   (qn)   <span class="p">{}</span>;
+
+
+    <span class="k">\draw</span>[&gt;=latex,
+          auto=left,
+          every loop]
+         (a)   edge node <span class="p">{}</span>                         (I)
+         (I)   edge node <span class="p">{$</span><span class="nb">q</span><span class="p">_{</span><span class="nv">\mathrm</span><span class="p">{</span><span class="nb">I</span><span class="p">}}$}</span>         (qI)
+         (II)  edge node <span class="p">{$</span><span class="nb">q</span><span class="p">_{</span><span class="nv">\mathrm</span><span class="p">{</span><span class="nb">II</span><span class="p">}}$}</span>        (qII)
+         (III) edge node <span class="p">{$</span><span class="nb">q</span><span class="p">_{</span><span class="nv">\mathrm</span><span class="p">{</span><span class="nb">III</span><span class="p">}}$}</span>       (qIII)
+         (IV)  edge node <span class="p">{$</span><span class="nb">q</span><span class="p">_{</span><span class="nv">\mathrm</span><span class="p">{</span><span class="nb">IV</span><span class="p">}}$}</span>        (qIV)
+         (5)   edge node <span class="p">{$</span><span class="nb">q</span><span class="p">_</span><span class="m">5</span><span class="p">$}</span>                    (q5)
+         (n)   edge node <span class="p">{$</span><span class="nb">q</span><span class="p">_</span><span class="nb">n</span><span class="p">$}</span>                    (qn)
+         (I)   edge node <span class="p">{$</span><span class="nv">\lambda</span><span class="p">_{</span><span class="nv">\mathrm</span><span class="p">{</span><span class="nb">I</span><span class="p">}}$}</span>   (II)
+         (II)  edge node <span class="p">{$</span><span class="nv">\lambda</span><span class="p">_{</span><span class="nv">\mathrm</span><span class="p">{</span><span class="nb">II</span><span class="p">}}$}</span>  (III)
+         (III) edge node <span class="p">{$</span><span class="nv">\lambda</span><span class="p">_{</span><span class="nv">\mathrm</span><span class="p">{</span><span class="nb">III</span><span class="p">}}$}</span> (IV)
+         (IV)  edge node <span class="p">{$</span><span class="nv">\lambda</span><span class="p">_{</span><span class="nv">\mathrm</span><span class="p">{</span><span class="nb">IV</span><span class="p">}}$}</span>  (5)
+         (5)   edge node <span class="p">{$</span><span class="nv">\lambda</span><span class="p">$}</span>                (5-n)
+         (5-n) edge node <span class="p">{$</span><span class="nv">\lambda</span><span class="p">$}</span>                (n);
+
+    <span class="nt">\end{tikzpicture}</span>
+<span class="nt">\end{document}</span></code></pre></figure>
+
+<figure style="width: 600px" class="figure">
+    <a name="Figure9"></a>
+    <img src="http://assets.steventhornton.ca/Markov_Chains_in_LaTeX/PhaseTypeMortalityModel.png" srcset="http://assets.steventhornton.ca/Markov_Chains_in_LaTeX/PhaseTypeMortalityModel.png 1x, http://assets.steventhornton.ca/Markov_Chains_in_LaTeX/PhaseTypeMortalityModel%402x.png 2x" alt="A multi-state Markov chain." width="600" height="143" />
+    <figcaption><b>Figure 9:</b> View LaTeX source on <a href="https://www.overleaf.com/read/ccxcydmtsbhf" target="_blank">Overleaf</a>.
+    </figcaption>
+</figure>
+
+<h2 id="final-thoughts">Final Thoughts</h2>
+
+<p>I have presented one way of producing Markov chain diagrams here. Are there other ways to do this? Yes. Are there easier ways of accomplishing what I have presented here? Let me know in the comments.</p>
+
+<h2 id="references">References:</h2>
+
+<ul>
+  <li><a href="https://tex.stackexchange.com/questions/89662/how-to-create-a-markov-chain-with-an-empty-node" target="_blank">tex.stackexchange.com/questions/89662/how-to-create-a-markov-chain-with-an-empty-node</a></li>
+  <li><a href="https://tex.stackexchange.com/questions/20784/which-package-can-be-used-to-draw-automata" target="_blank">tex.stackexchange.com/questions/20784/which-package-can-be-used-to-draw-automata</a></li>
+  <li>X Sheldon Lin and Xiaoming Liu. Markov aging process and phase-type law of mortality. North American Actuarial Journal, 11(4):92–109, 2007.</li>
+</ul>
+
+</div>
+
+
+  </div>
+  <footer>
+  <div class="container">
+    <ul class="social-media-icons">
+      
+      <li><a href="https://www.linkedin.com/in/stevenethornton" class="social-media-icons"><i class="fa fa-2x fa-linkedin-square" aria-hidden="true"></i></a></li>
+      
+      
+      <li><a href="mailto:steven@steventhornton.ca" class="social-media-icons"><i class="fa fa-2x fa-envelope-square" aria-hidden="true"></i></a></li>
+      
+        
+      <li><a href="https://twitter.com/stevenethornton" class="social-media-icons"><i class="fa fa-2x fa-twitter-square" aria-hidden="true"></i></a></li>
+      
+        
+      <li><a href="https://github.com/steventhornton" class="social-media-icons"><i class="fa fa-2x fa-github-square" aria-hidden="true"></i></a></li>
+      
+      <li>
+    </ul>
+  </div>
+</footer>
+
+</body>
+</html>
