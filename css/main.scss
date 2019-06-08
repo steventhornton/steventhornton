@@ -85,12 +85,15 @@ footer {
 
 .figure {
     display: block;
-    margin: 0 auto;
+    margin: 15px auto;
     padding: 5px;
 }
 
 .figure figcaption {
+  margin-top: 0.7rem;
   font-size: 0.9em;
+  line-height: 1.5em;
+  color: #49494c;
 }
 
 .floated-image {
@@ -110,7 +113,8 @@ footer {
 
 .post-date {
     color: #7f7f7f;
-    font-size: 18px;
+    font-size: 16px;
+    margin-bottom: 0.5rem;
 }
 
 div .post {
@@ -157,6 +161,35 @@ div .post {
 }
 
 /*----------------------------------------------------------------------------
+  Table Styles
+----------------------------------------------------------------------------*/
+.set-table {
+    border-collapse: collapse;
+    border-spacing: 0;
+    font-size: 13px;
+    text-align: center;
+    margin: 10px auto;
+}
+
+.set-table tr:nth-child(even) {
+  background: #ededed;
+}
+
+.set-table tr:nth-child(odd) {
+  background: #FFF;
+}
+
+.set-table thead th {
+    background: #ddd;
+    border: solid 1px #ccc;
+    padding: 5px 10px;
+}
+.set-table tbody td {
+    border: solid 1px #ddd;
+    padding: 5px 10px;
+}
+
+/*----------------------------------------------------------------------------
   Code Styles
 ----------------------------------------------------------------------------*/
 
@@ -178,12 +211,14 @@ code{
   color: #556270;
   background: #F4FAFF;
   border-radius: 3px;
+  white-space: nowrap;
 }
 pre code {
   padding: 0;
   color: inherit;
   background: inherit;
   border-radius: 0;
+  white-space: inherit;
 }
 code span.global {
   color: #3388DD;
