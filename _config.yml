@@ -9,7 +9,7 @@ highlighter: rouge
 asset_url: http://assets.steventhornton.ca
 permalink: /blog/:title:output_ext
 
-plugins: ['paginate-v2', 'jekyll-gist', 'jekyll-feed']
+plugins: ['jekyll-paginate-v2', 'jekyll-gist', 'jekyll-feed']
 
 # Sass conversion configs
 sass:
