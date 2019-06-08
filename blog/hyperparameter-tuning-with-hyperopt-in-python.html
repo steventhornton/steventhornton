@@ -113,52 +113,52 @@
 <figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="n">pd</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="n">np</span>
 
-<span class="c"># Load the data</span>
-<span class="n">df_train</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_table</span><span class="p">(</span><span class="s">'labeledTrainData.tsv'</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s">'</span><span class="se">\t</span><span class="s">'</span><span class="p">)</span>
+<span class="c1"># Load the data
+</span><span class="n">df_train</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_table</span><span class="p">(</span><span class="s">'labeledTrainData.tsv'</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s">'</span><span class="se">\t</span><span class="s">'</span><span class="p">)</span>
 <span class="n">df_test</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_table</span><span class="p">(</span><span class="s">'testData.tsv'</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s">'</span><span class="se">\t</span><span class="s">'</span><span class="p">)</span>
 
-<span class="c"># Add a column for the score (out of 10)</span>
-<span class="n">df_train</span><span class="p">[</span><span class="s">'score'</span><span class="p">]</span> <span class="o">=</span> <span class="n">df_train</span><span class="p">[</span><span class="s">'id'</span><span class="p">]</span><span class="o">.</span><span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">'_'</span><span class="p">)[</span><span class="mi">1</span><span class="p">]))</span>
+<span class="c1"># Add a column for the score (out of 10)
+</span><span class="n">df_train</span><span class="p">[</span><span class="s">'score'</span><span class="p">]</span> <span class="o">=</span> <span class="n">df_train</span><span class="p">[</span><span class="s">'id'</span><span class="p">]</span><span class="o">.</span><span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">'_'</span><span class="p">)[</span><span class="mi">1</span><span class="p">]))</span>
 <span class="n">df_test</span><span class="p">[</span><span class="s">'score'</span><span class="p">]</span> <span class="o">=</span> <span class="n">df_test</span><span class="p">[</span><span class="s">'id'</span><span class="p">]</span><span class="o">.</span><span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">'_'</span><span class="p">)[</span><span class="mi">1</span><span class="p">]))</span>
 
-<span class="c"># Add a column for the class, 1 for positive, 0 for negative</span>
-<span class="n">df_train</span><span class="p">[</span><span class="s">'class'</span><span class="p">]</span> <span class="o">=</span> <span class="n">df_train</span><span class="p">[</span><span class="s">'score'</span><span class="p">]</span><span class="o">.</span><span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="n">x</span> <span class="o">&gt;</span> <span class="mi">5</span><span class="p">))</span>
+<span class="c1"># Add a column for the class, 1 for positive, 0 for negative
+</span><span class="n">df_train</span><span class="p">[</span><span class="s">'class'</span><span class="p">]</span> <span class="o">=</span> <span class="n">df_train</span><span class="p">[</span><span class="s">'score'</span><span class="p">]</span><span class="o">.</span><span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="n">x</span> <span class="o">&gt;</span> <span class="mi">5</span><span class="p">))</span>
 <span class="n">df_test</span><span class="p">[</span><span class="s">'class'</span><span class="p">]</span> <span class="o">=</span> <span class="n">df_test</span><span class="p">[</span><span class="s">'score'</span><span class="p">]</span><span class="o">.</span><span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="n">x</span> <span class="o">&gt;</span> <span class="mi">5</span><span class="p">))</span>
 
-<span class="c"># Sort the df_test by class (it will need to be sorted later)</span>
-<span class="n">df_test</span> <span class="o">=</span> <span class="n">df_test</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="s">'class'</span><span class="p">,</span> <span class="n">ascending</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span></code></pre></figure>
+<span class="c1"># Sort the df_test by class (it will need to be sorted later)
+</span><span class="n">df_test</span> <span class="o">=</span> <span class="n">df_test</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="s">'class'</span><span class="p">,</span> <span class="n">ascending</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span></code></pre></figure>
 
 <p>The next step in any text classification problem is cleaning the documents.</p>
 
 <figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="kn">from</span> <span class="nn">nltk.corpus</span> <span class="kn">import</span> <span class="n">stopwords</span>
 <span class="n">cachedStopWords</span> <span class="o">=</span> <span class="n">stopwords</span><span class="o">.</span><span class="n">words</span><span class="p">(</span><span class="s">'english'</span><span class="p">)</span>
 
-<span class="c"># Function for removing stopwords from a string</span>
-<span class="k">def</span> <span class="nf">removeStopwords</span><span class="p">(</span><span class="n">s</span><span class="p">):</span>
+<span class="c1"># Function for removing stopwords from a string
+</span><span class="k">def</span> <span class="nf">removeStopwords</span><span class="p">(</span><span class="n">s</span><span class="p">):</span>
     <span class="k">return</span> <span class="s">' '</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">word</span> <span class="k">for</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">s</span><span class="o">.</span><span class="n">split</span><span class="p">()</span> <span class="k">if</span> <span class="n">word</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">cachedStopWords</span><span class="p">])</span>
 
-<span class="c"># Function for cleaning the reviews</span>
-<span class="k">def</span> <span class="nf">cleanText</span><span class="p">(</span><span class="n">s</span><span class="p">):</span>
-    <span class="n">s</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="nb">str</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>                         <span class="c"># Convert to lowercase</span>
-    <span class="n">s</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="nb">str</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">r'&lt;.*?&gt;'</span><span class="p">,</span> <span class="s">' '</span><span class="p">)</span>          <span class="c"># Remove HTML characters</span>
-    <span class="n">s</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="nb">str</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">'</span><span class="se">\'</span><span class="s">'</span><span class="p">,</span> <span class="s">''</span><span class="p">)</span>               <span class="c"># Remove single quotes ' </span>
-    <span class="n">s</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="nb">str</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">'-'</span><span class="p">,</span> <span class="s">''</span><span class="p">)</span>                <span class="c"># Remove dashes -</span>
-    <span class="n">s</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="nb">str</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">r'[^a-zA-Z]'</span><span class="p">,</span> <span class="s">' '</span><span class="p">)</span>      <span class="c"># Remove non alpha characters</span>
-    <span class="n">s</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">s</span><span class="p">:</span> <span class="s">' '</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">split</span><span class="p">()))</span>  <span class="c"># Remove extra whitespae</span>
-    <span class="n">s</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="nb">str</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>                         <span class="c"># Remove whitespace at start and end</span>
-    <span class="n">s</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="nb">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">removeStopwords</span><span class="p">(</span><span class="n">x</span><span class="p">))</span> <span class="c"># Remove stopwords</span>
-    <span class="k">return</span> <span class="n">s</span>
+<span class="c1"># Function for cleaning the reviews
+</span><span class="k">def</span> <span class="nf">cleanText</span><span class="p">(</span><span class="n">s</span><span class="p">):</span>
+    <span class="n">s</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="nb">str</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>                         <span class="c1"># Convert to lowercase
+</span>    <span class="n">s</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="nb">str</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">r'&lt;.*?&gt;'</span><span class="p">,</span> <span class="s">' '</span><span class="p">)</span>          <span class="c1"># Remove HTML characters
+</span>    <span class="n">s</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="nb">str</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">'</span><span class="se">\'</span><span class="s">'</span><span class="p">,</span> <span class="s">''</span><span class="p">)</span>               <span class="c1"># Remove single quotes ' 
+</span>    <span class="n">s</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="nb">str</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">'-'</span><span class="p">,</span> <span class="s">''</span><span class="p">)</span>                <span class="c1"># Remove dashes -
+</span>    <span class="n">s</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="nb">str</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">r'[^a-zA-Z]'</span><span class="p">,</span> <span class="s">' '</span><span class="p">)</span>      <span class="c1"># Remove non alpha characters
+</span>    <span class="n">s</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">s</span><span class="p">:</span> <span class="s">' '</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">split</span><span class="p">()))</span>  <span class="c1"># Remove extra whitespae
+</span>    <span class="n">s</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="nb">str</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>                         <span class="c1"># Remove whitespace at start and end
+</span>    <span class="n">s</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="nb">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">removeStopwords</span><span class="p">(</span><span class="n">x</span><span class="p">))</span> <span class="c1"># Remove stopwords
+</span>    <span class="k">return</span> <span class="n">s</span>
 
-<span class="c"># Clean the reviews</span>
-<span class="n">df_train</span><span class="p">[</span><span class="s">'review'</span><span class="p">]</span> <span class="o">=</span> <span class="n">cleanText</span><span class="p">(</span><span class="n">df_train</span><span class="p">[</span><span class="s">'review'</span><span class="p">])</span>
+<span class="c1"># Clean the reviews
+</span><span class="n">df_train</span><span class="p">[</span><span class="s">'review'</span><span class="p">]</span> <span class="o">=</span> <span class="n">cleanText</span><span class="p">(</span><span class="n">df_train</span><span class="p">[</span><span class="s">'review'</span><span class="p">])</span>
 <span class="n">df_test</span><span class="p">[</span><span class="s">'review'</span><span class="p">]</span> <span class="o">=</span> <span class="n">cleanText</span><span class="p">(</span><span class="n">df_test</span><span class="p">[</span><span class="s">'review'</span><span class="p">])</span></code></pre></figure>
 
 <p>When we build the model later the <code class="highlighter-rouge">TfidfVectorizer</code> in <code class="highlighter-rouge">sklearn.feature_extraction.text</code> will be used to construct a TF-IDF matrix. This function is able to do the preprocessing of the text, I avoid doing that here because the TF-IDF matrix will need to be reconstructed for each iteration of the hyperparamter tuning process. By processing the documents before building the TF-IDF matrix we will avoid repeating this work.</p>
 
 <p>Finally, we separate the reviews and their classes into separate numpy arrays.</p>
 
-<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="c"># Separate into training and test data</span>
-<span class="n">X_train</span> <span class="o">=</span> <span class="n">df_train</span><span class="p">[</span><span class="s">'review'</span><span class="p">]</span>
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="c1"># Separate into training and test data
+</span><span class="n">X_train</span> <span class="o">=</span> <span class="n">df_train</span><span class="p">[</span><span class="s">'review'</span><span class="p">]</span>
 <span class="n">y_train</span> <span class="o">=</span> <span class="n">df_train</span><span class="p">[</span><span class="s">'class'</span><span class="p">]</span>
 <span class="n">X_test</span> <span class="o">=</span> <span class="n">df_test</span><span class="p">[</span><span class="s">'review'</span><span class="p">]</span>
 <span class="n">y_test</span> <span class="o">=</span> <span class="n">df_test</span><span class="p">[</span><span class="s">'class'</span><span class="p">]</span></code></pre></figure>
@@ -181,8 +181,8 @@
 <span class="kn">from</span> <span class="nn">sklearn.feature_selection.univariate_selection</span> <span class="kn">import</span> <span class="n">SelectPercentile</span><span class="p">,</span> <span class="n">chi2</span>
 <span class="kn">from</span> <span class="nn">sklearn.pipeline</span> <span class="kn">import</span> <span class="n">Pipeline</span>
 
-<span class="c"># The model</span>
-<span class="n">vectorizer</span> <span class="o">=</span> <span class="n">TfidfVectorizer</span><span class="p">(</span><span class="n">strip_accents</span><span class="o">=</span><span class="s">'unicode'</span><span class="p">)</span>
+<span class="c1"># The model
+</span><span class="n">vectorizer</span> <span class="o">=</span> <span class="n">TfidfVectorizer</span><span class="p">(</span><span class="n">strip_accents</span><span class="o">=</span><span class="s">'unicode'</span><span class="p">)</span>
 <span class="n">kbest</span> <span class="o">=</span> <span class="n">SelectPercentile</span><span class="p">(</span><span class="n">chi2</span><span class="p">)</span>
 <span class="n">clf</span> <span class="o">=</span> <span class="n">SGDClassifier</span><span class="p">(</span><span class="n">loss</span><span class="o">=</span><span class="s">'modified_huber'</span><span class="p">,</span> <span class="n">penalty</span><span class="o">=</span><span class="s">'elasticnet'</span><span class="p">)</span>
 
@@ -272,32 +272,32 @@
 
 <figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="kn">from</span> <span class="nn">hyperopt</span> <span class="kn">import</span> <span class="n">hp</span>
 
-<span class="c"># Parameter search space</span>
-<span class="n">space</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="c1"># Parameter search space
+</span><span class="n">space</span> <span class="o">=</span> <span class="p">{}</span>
 
-<span class="c"># One of (1,1), (1,2), or (1,3)</span>
-<span class="n">space</span><span class="p">[</span><span class="s">'vec__ngram_range'</span><span class="p">]</span> <span class="o">=</span> <span class="n">hp</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="s">'vec__ngram_range'</span><span class="p">,</span> <span class="p">[(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="p">)])</span>
+<span class="c1"># One of (1,1), (1,2), or (1,3)
+</span><span class="n">space</span><span class="p">[</span><span class="s">'vec__ngram_range'</span><span class="p">]</span> <span class="o">=</span> <span class="n">hp</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="s">'vec__ngram_range'</span><span class="p">,</span> <span class="p">[(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="p">)])</span>
 
-<span class="c"># Random integer in [1,3]</span>
-<span class="n">space</span><span class="p">[</span><span class="s">'vec__min_df'</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span><span class="o">+</span><span class="n">hp</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="s">'vec__min_df'</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+<span class="c1"># Random integer in [1,3]
+</span><span class="n">space</span><span class="p">[</span><span class="s">'vec__min_df'</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span><span class="o">+</span><span class="n">hp</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="s">'vec__min_df'</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
 
-<span class="c"># Uniform between 0.7 and 1</span>
-<span class="n">space</span><span class="p">[</span><span class="s">'vec__max_df'</span><span class="p">]</span> <span class="o">=</span> <span class="n">hp</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="s">'vec__max_df'</span><span class="p">,</span> <span class="mf">0.7</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span>
+<span class="c1"># Uniform between 0.7 and 1
+</span><span class="n">space</span><span class="p">[</span><span class="s">'vec__max_df'</span><span class="p">]</span> <span class="o">=</span> <span class="n">hp</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="s">'vec__max_df'</span><span class="p">,</span> <span class="mf">0.7</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span>
 
-<span class="c"># One of True or False</span>
-<span class="n">space</span><span class="p">[</span><span class="s">'vec__sublinear_tf'</span><span class="p">]</span> <span class="o">=</span> <span class="n">hp</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="s">'vec__sublinear_tf'</span><span class="p">,</span> <span class="p">[</span><span class="bp">True</span><span class="p">,</span> <span class="bp">False</span><span class="p">])</span>
+<span class="c1"># One of True or False
+</span><span class="n">space</span><span class="p">[</span><span class="s">'vec__sublinear_tf'</span><span class="p">]</span> <span class="o">=</span> <span class="n">hp</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="s">'vec__sublinear_tf'</span><span class="p">,</span> <span class="p">[</span><span class="bp">True</span><span class="p">,</span> <span class="bp">False</span><span class="p">])</span>
 
-<span class="c"># Random number between 50 and 100</span>
-<span class="n">space</span><span class="p">[</span><span class="s">'kbest__percentile'</span><span class="p">]</span> <span class="o">=</span> <span class="n">hp</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="s">'kbest__percentile'</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+<span class="c1"># Random number between 50 and 100
+</span><span class="n">space</span><span class="p">[</span><span class="s">'kbest__percentile'</span><span class="p">]</span> <span class="o">=</span> <span class="n">hp</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="s">'kbest__percentile'</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
 
-<span class="c"># Random number between 0 and 1</span>
-<span class="n">space</span><span class="p">[</span><span class="s">'clf__l1_ratio'</span><span class="p">]</span> <span class="o">=</span> <span class="n">hp</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="s">'clf__l1_ratio'</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span>
+<span class="c1"># Random number between 0 and 1
+</span><span class="n">space</span><span class="p">[</span><span class="s">'clf__l1_ratio'</span><span class="p">]</span> <span class="o">=</span> <span class="n">hp</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="s">'clf__l1_ratio'</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span>
 
-<span class="c"># Log-uniform between 1e-9 and 1e-4</span>
-<span class="n">space</span><span class="p">[</span><span class="s">'clf__alpha'</span><span class="p">]</span> <span class="o">=</span> <span class="n">hp</span><span class="o">.</span><span class="n">loguniform</span><span class="p">(</span><span class="s">'clf__alpha'</span><span class="p">,</span> <span class="o">-</span><span class="mi">9</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="mi">10</span><span class="p">),</span> <span class="o">-</span><span class="mi">4</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="mi">10</span><span class="p">))</span>
+<span class="c1"># Log-uniform between 1e-9 and 1e-4
+</span><span class="n">space</span><span class="p">[</span><span class="s">'clf__alpha'</span><span class="p">]</span> <span class="o">=</span> <span class="n">hp</span><span class="o">.</span><span class="n">loguniform</span><span class="p">(</span><span class="s">'clf__alpha'</span><span class="p">,</span> <span class="o">-</span><span class="mi">9</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="mi">10</span><span class="p">),</span> <span class="o">-</span><span class="mi">4</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="mi">10</span><span class="p">))</span>
 
-<span class="c"># Random integer in 20:5:80</span>
-<span class="n">space</span><span class="p">[</span><span class="s">'clf__n_iter'</span><span class="p">]</span> <span class="o">=</span> <span class="mi">20</span> <span class="o">+</span> <span class="mi">5</span><span class="o">*</span><span class="n">hp</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="s">'clf__n_iter'</span><span class="p">,</span> <span class="mi">12</span><span class="p">)</span></code></pre></figure>
+<span class="c1"># Random integer in 20:5:80
+</span><span class="n">space</span><span class="p">[</span><span class="s">'clf__n_iter'</span><span class="p">]</span> <span class="o">=</span> <span class="mi">20</span> <span class="o">+</span> <span class="mi">5</span><span class="o">*</span><span class="n">hp</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="s">'clf__n_iter'</span><span class="p">,</span> <span class="mi">12</span><span class="p">)</span></code></pre></figure>
 
 <p>Now that the hyperparaemter space has been defined we need to define an objective function for hyperopt to minimize. The objective function will start by randomly splitting the training data into 10 folds. The <code class="highlighter-rouge">KFold</code> function is used to ensure we get a new, random set of folds each time we call the objective function (otherwise we might overfit to the folds). The <code class="highlighter-rouge">cross_val_score</code> function with the <code class="highlighter-rouge">roc_auc</code> scoring metric is then called to run 10-fold cross-validation on the model. Since our goal is to maximize the ROC AUC, and hyperopt works by minimizing the objective function, we will return <code class="highlighter-rouge">1 - score.mean()</code> from the objective function. To significantly decrease the execution time, you can set the <code class="highlighter-rouge">n_jobs</code> parameter in the <code class="highlighter-rouge">cross_val_score</code> function.</p>
 
@@ -316,11 +316,11 @@
 
 <figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="kn">from</span> <span class="nn">hyperopt</span> <span class="kn">import</span> <span class="n">fmin</span><span class="p">,</span> <span class="n">tpe</span><span class="p">,</span> <span class="n">Trials</span>
 
-<span class="c"># The Trials object will store details of each iteration</span>
-<span class="n">trials</span> <span class="o">=</span> <span class="n">Trials</span><span class="p">()</span>
+<span class="c1"># The Trials object will store details of each iteration
+</span><span class="n">trials</span> <span class="o">=</span> <span class="n">Trials</span><span class="p">()</span>
 
-<span class="c"># Run the hyperparameter search using the tpe algorithm</span>
-<span class="n">best</span> <span class="o">=</span> <span class="n">fmin</span><span class="p">(</span><span class="n">objective</span><span class="p">,</span>
+<span class="c1"># Run the hyperparameter search using the tpe algorithm
+</span><span class="n">best</span> <span class="o">=</span> <span class="n">fmin</span><span class="p">(</span><span class="n">objective</span><span class="p">,</span>
             <span class="n">space</span><span class="p">,</span>
             <span class="n">algo</span><span class="o">=</span><span class="n">tpe</span><span class="o">.</span><span class="n">suggest</span><span class="p">,</span>
             <span class="n">max_evals</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
@@ -330,15 +330,15 @@
 
 <figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="kn">from</span> <span class="nn">hyperopt</span> <span class="kn">import</span> <span class="n">space_eval</span>
 
-<span class="c"># Get the values of the optimal parameters</span>
-<span class="n">best_params</span> <span class="o">=</span> <span class="n">space_eval</span><span class="p">(</span><span class="n">space</span><span class="p">,</span> <span class="n">best</span><span class="p">)</span>
+<span class="c1"># Get the values of the optimal parameters
+</span><span class="n">best_params</span> <span class="o">=</span> <span class="n">space_eval</span><span class="p">(</span><span class="n">space</span><span class="p">,</span> <span class="n">best</span><span class="p">)</span>
 
-<span class="c"># Fit the model with the optimal hyperparamters</span>
-<span class="n">pipe</span><span class="o">.</span><span class="n">set_params</span><span class="p">(</span><span class="o">**</span><span class="n">best_params</span><span class="p">)</span>
+<span class="c1"># Fit the model with the optimal hyperparamters
+</span><span class="n">pipe</span><span class="o">.</span><span class="n">set_params</span><span class="p">(</span><span class="o">**</span><span class="n">best_params</span><span class="p">)</span>
 <span class="n">pipe</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">);</span>
 
-<span class="c"># Score with the test data</span>
-<span class="n">y_score</span> <span class="o">=</span> <span class="n">pipe</span><span class="o">.</span><span class="n">predict_proba</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span>
+<span class="c1"># Score with the test data
+</span><span class="n">y_score</span> <span class="o">=</span> <span class="n">pipe</span><span class="o">.</span><span class="n">predict_proba</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span>
 <span class="n">auc_score</span> <span class="o">=</span> <span class="n">roc_auc_score</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">y_score</span><span class="p">[:,</span><span class="mi">1</span><span class="p">])</span></code></pre></figure>
 
 <h2 id="results">Results</h2>
