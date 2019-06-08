@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-86308175-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-86308175-1');
+</script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<title>Steven Thornton</title>
+<meta name="description" content="Steven Thornton">
+<meta name="keywords" content="">
+<!-- Twitter Card and Open Graph tags -->
+<meta name="twitter:title" content="Default Plot Settings in Matlab &#8211; ">
+<meta name="twitter:description" content="Steven Thornton">
+<meta name="twitter:creator" content="@stevenethornton">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image:src" content="http://localhost:4000/images/logo.png">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Default Plot Settings in Matlab &#8211; ">
+<meta property="og:description" content="Steven Thornton">
+<meta property="og:url" content="http://localhost:4000/blog/default-plot-settings-in-matlab.html">
+<meta property="og:site_name" content="">
+
+<!-- MathJax -->
+
+  <script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    showMathMenu: false,
+    showProcessingMessages: false,
+    "HTML-CSS": {
+      scale: 90
+    },
+    tex2jax: {
+      inlineMath: [ ['$','$'] ],
+      displayMath: [ ['$$','$$'] ],
+      processEscapes: true,
+    }
+  });
+</script>
+<script type="text/javascript"
+        src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS_HTML">
+</script>
+
+
+<script src="https://code.jquery.com/jquery-3.4.0.min.js" integrity="sha256-BJeo0qm959uMBGb65z40ejJYGSgR7REI4+CW1fNKwOg=" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+<link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+
+<!-- Webmaster Tools verfication -->
+
+
+
+
+
+<link rel="canonical" href="http://localhost:4000/blog/default-plot-settings-in-matlab.html">
+<link href="http://localhost:4000/feed.xml" type="application/atom+xml" rel="alternate" title=" Feed">
+
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<link href="https://fonts.googleapis.com/css?family=Zilla+Slab" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+
+<link rel="stylesheet" href="http://localhost:4000/css/main.css" type="text/css" />
+
+
+</head>
+<body>
+  <div class="container-fullwidth navbar-dark bg-dark nav-container">
+  <div class="container">
+    <nav class="navbar navbar-expand-lg  justify-content-end">
+      <a class="navbar-brand mr-auto" href="http://localhost:4000">Steven Thornton</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse flex-grow-0" id="navbarSupportedContent">
+        <ul class="navbar-nav text-right">
+          <li class="nav-item ">
+            <a class="nav-link" href="http://localhost:4000">Home</a>
+          </li>
+          <li class="nav-item ">
+            <a class="nav-link" href="http://localhost:4000/blog">Blog</a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+  </div>
+</div>
+
+  <div class="container">
+  <h2>Default Plot Settings in Matlab</h2>
+<p class="post-date">November 23, 2016</p>
+<div class="post">
+<p><strong>Note: This post may be out of date and some code may no longer do what is was originally intended. Since completing my PhD, I no longer have access to Matlab and am unable to update the post.</strong></p>
+
+<p>Have you ever applied custom styling to a figure in Matlab only to discover this styling does not transfer to subsequent figures? Unfortunately, plot styling only applies to the figure it was initially applied to. Luckily, an under-documented feature in Matlab allows you to set global properties for your figures. Matlab features a short document (find it <a href="https://www.mathworks.com/help/matlab/creating_plots/default-property-values.html" target="_blank">here</a>) about setting default properties.</p>
+
+<p>For more details about how to customize the appearance of a plot, see my post <a href="http://localhost:4000/blog/publication-quality-plots-with-matlab/">Publication Quality Plots with Matlab</a>.</p>
+
+<h2 id="accessing-the-global-plot-settings">Accessing the Global Plot Settings</h2>
+<p>If you run <code class="highlighter-rouge">get(groot, 'Factory')</code> in the Matlab (<code class="highlighter-rouge">groot</code> is the <a href="https://www.mathworks.com/help/matlab/ref/groot.html" target="_blank">graphics root object</a>), a list of over 1000 properties and their factory default values will print. These are the factory default properties that Matlab will apply to all plots. These settings cannot be directly changed, but we can override them using with the <code class="highlighter-rouge">deafult</code> settings.</p>
+
+<p>The default settings can be viewed by running <code class="highlighter-rouge">get(groot, 'Default')</code>. This may print nothing initially, or it may print a few properties (on my computer it prints <code class="highlighter-rouge">defaultFigurePosition</code> and <code class="highlighter-rouge">defaultFigurePaperPositionMode</code>). To set one of these properties, we use <code class="highlighter-rouge">set(groot, propertyName, value)</code>, where <code class="highlighter-rouge">propertyName</code> is one of the properties in the list of factory defaults with <code class="highlighter-rouge">factory</code> replaced by <code class="highlighter-rouge">Default</code>.</p>
+
+<p>As a simple example, let’s say we wanted the default line width to be 10. We can view the factory default line width with <code class="highlighter-rouge">get(groot, 'FactoryLineLineWidth')</code> which should return <code class="highlighter-rouge">0.5</code>. To change the default, we use <code class="highlighter-rouge">set(groot, 'DefaultLineLineWidth', 10)</code>. If you now run <code class="highlighter-rouge">get(groot, 'Default')</code>, you will see the <code class="highlighter-rouge">DefaultLineLineWidth</code> property appear with a value of 10. To see this in action, <a href="#Figure1">Figure 1</a> shows the result of the code snippet below, both figures use the new line width of 10.</p>
+
+<figure style="width: 700px" class="figure">
+    <a name="Figure1"></a>
+    <img src="http://assets.steventhornton.ca/Default_Plot_Settings_in_Matlab/Figure1.png" srcset="http://assets.steventhornton.ca/Default_Plot_Settings_in_Matlab/Figure1.png 1x, http://assets.steventhornton.ca/Default_Plot_Settings_in_Matlab/Figure1%402x.png 2x" alt="Figure 1" width="700" height="216" />
+    <figcaption><b>Figure 1:</b> The default line-width of 10 is applied to both figures.
+    </figcaption>
+</figure>
+
+<figure class="highlight"><pre><code class="language-matlab" data-lang="matlab"><span class="nb">set</span><span class="p">(</span><span class="nb">groot</span><span class="p">,</span> <span class="s1">'DefaultLineLineWidth'</span><span class="p">,</span> <span class="mi">10</span><span class="p">);</span>
+
+<span class="n">x</span> <span class="o">=</span> <span class="nb">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="o">*</span><span class="nb">pi</span><span class="p">,</span> <span class="mi">1000</span><span class="p">);</span>
+
+<span class="nb">figure</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+<span class="nb">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="nb">sin</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="n">x</span><span class="p">,</span> <span class="nb">cos</span><span class="p">(</span><span class="n">x</span><span class="p">));</span>
+
+<span class="nb">figure</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span>
+<span class="nb">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="nb">besselj</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">x</span><span class="p">),</span> <span class="n">x</span><span class="p">,</span> <span class="nb">besselj</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">x</span><span class="p">));</span></code></pre></figure>
+
+<h2 id="example-1">Example 1</h2>
+<p>In this example I will work through how you can create a nice theme for your plots that uses a dark background with brightly colored lines. LaTeX is used to render all fonts in the plot giving it a much more professional look than the standard font used by Matlab.</p>
+
+<p>To start, we will set up our base plot (with the factory default settings applied). Here I will create two figures, one of the <a href="https://en.wikipedia.org/wiki/Bessel_function" target="_blank">Bessel function</a> of the first kind for $\nu = 0\dots 4$, and the second a plot of the <a href="https://en.wikipedia.org/wiki/Legendre_polynomials" target="_blank">Legendre polynomials</a> for $n = 1 \dots 5$. The resulting plots can be seen in <a href="#Figure2">Figure 2</a> and was produced with the code snippet below the figure.</p>
+
+<figure style="width: 700px" class="figure">
+    <a name="Figure2"></a>
+    <img src="http://assets.steventhornton.ca/Default_Plot_Settings_in_Matlab/Figure2.png" srcset="http://assets.steventhornton.ca/Default_Plot_Settings_in_Matlab/Figure2.png 1x, http://assets.steventhornton.ca/Default_Plot_Settings_in_Matlab/Figure2%402x.png 2x" alt="Figure 2" width="700" height="216" />
+    <figcaption><b>Figure 2:</b> <i>Left:</i> Plot of the first five Bessel functions of the first kind. <i>Right:</i> Plot of the first five Legendre polynomials. No custom styling has been applied yet.
+    </figcaption>
+</figure>
+
+<figure class="highlight"><pre><code class="language-matlab" data-lang="matlab"><span class="c1">% Figure 1</span>
+<span class="nb">figure</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+
+<span class="n">x</span> <span class="o">=</span> <span class="nb">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">1000</span><span class="p">);</span>
+
+<span class="nb">hold</span> <span class="n">on</span><span class="p">;</span>
+<span class="k">for</span> <span class="nb">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">:</span><span class="mi">4</span>
+    <span class="nb">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="nb">besselj</span><span class="p">(</span><span class="nb">i</span><span class="p">,</span> <span class="n">x</span><span class="p">));</span>
+<span class="k">end</span>
+<span class="nb">title</span><span class="p">(</span><span class="s1">'Plot of $J_{\nu}(x)$ for $\nu = 0\dots 4$'</span><span class="p">);</span>
+
+<span class="c1">% Figure 2</span>
+<span class="nb">figure</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span>
+
+<span class="n">x</span> <span class="o">=</span> <span class="nb">linspace</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1000</span><span class="p">);</span>
+
+<span class="nb">hold</span> <span class="n">on</span><span class="p">;</span>
+<span class="k">for</span> <span class="nb">i</span><span class="o">=</span><span class="mi">1</span><span class="p">:</span><span class="mi">5</span>
+    <span class="nb">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">legendreP</span><span class="p">(</span><span class="nb">i</span><span class="p">,</span> <span class="n">x</span><span class="p">));</span>
+<span class="k">end</span>
+<span class="nb">title</span><span class="p">(</span><span class="s1">'Plot of $P_i(x)$ for $i=1 \dots 5$'</span><span class="p">);</span></code></pre></figure>
+
+<p>Clearly these plots need some work to make them nicer looking. To start, we will change the background color. Two properties need to be changed for this: <code class="highlighter-rouge">DefaultFigureColor</code> and <code class="highlighter-rouge">DefaultAxesColor</code>. <code class="highlighter-rouge">FigureColor</code> controls the background of the figure window, and <code class="highlighter-rouge">AxesColor</code> controls the background color of the plot area. We will also turn off the property <code class="highlighter-rouge">FigureInvertHardcopy</code> so Matlab does not change these settings when we save our plot.</p>
+
+<figure class="highlight"><pre><code class="language-matlab" data-lang="matlab"><span class="nb">set</span><span class="p">(</span><span class="nb">groot</span><span class="p">,</span> <span class="s1">'DefaultAxesColor'</span><span class="p">,</span> <span class="p">[</span><span class="mi">25</span><span class="p">,</span> <span class="mi">25</span><span class="p">,</span> <span class="mi">25</span><span class="p">]/</span><span class="mi">255</span><span class="p">);</span>
+<span class="nb">set</span><span class="p">(</span><span class="nb">groot</span><span class="p">,</span> <span class="s1">'DefaultFigureColor'</span><span class="p">,</span> <span class="p">[</span><span class="mi">25</span><span class="p">,</span> <span class="mi">25</span><span class="p">,</span> <span class="mi">25</span><span class="p">]/</span><span class="mi">255</span><span class="p">);</span>
+<span class="nb">set</span><span class="p">(</span><span class="nb">groot</span><span class="p">,</span> <span class="s1">'DefaultFigureInvertHardcopy'</span><span class="p">,</span> <span class="s1">'off'</span><span class="p">);</span></code></pre></figure>
+
+<p>Next, we can change the default colors Matlab uses for the lines. The <code class="highlighter-rouge">AxesColorOrder</code> property expects an $n \times 3$ matrix of values between 0 and 1 where each row represents an rgb triple. While we are working on the lines, we will set their default width to 3 using <code class="highlighter-rouge">DefaultLineLineWidth</code>.</p>
+
+<figure class="highlight"><pre><code class="language-matlab" data-lang="matlab"><span class="n">colors</span> <span class="o">=</span> <span class="p">[</span><span class="mi">241</span><span class="p">,</span> <span class="mi">90</span><span class="p">,</span> <span class="mi">90</span><span class="p">;</span>
+          <span class="mi">240</span><span class="p">,</span> <span class="mi">196</span><span class="p">,</span> <span class="mi">25</span><span class="p">;</span>
+          <span class="mi">78</span><span class="p">,</span> <span class="mi">186</span><span class="p">,</span> <span class="mi">111</span><span class="p">;</span>
+          <span class="mi">45</span><span class="p">,</span> <span class="mi">149</span><span class="p">,</span> <span class="mi">191</span><span class="p">;</span>
+          <span class="mi">149</span><span class="p">,</span> <span class="mi">91</span><span class="p">,</span> <span class="mi">165</span><span class="p">]/</span><span class="mi">255</span><span class="p">;</span>
+<span class="nb">set</span><span class="p">(</span><span class="nb">groot</span><span class="p">,</span> <span class="s1">'DefaultAxesColorOrder'</span><span class="p">,</span> <span class="n">colors</span><span class="p">);</span>
+<span class="nb">set</span><span class="p">(</span><span class="nb">groot</span><span class="p">,</span> <span class="s1">'DefaultLineLineWidth'</span><span class="p">,</span> <span class="mi">3</span><span class="p">);</span></code></pre></figure>
+
+<p>Because we changed the background color to a dark gray, we will need to change the color of all the text to white so it is visible. The colors for the axes lines will also need to be inverted.</p>
+
+<figure class="highlight"><pre><code class="language-matlab" data-lang="matlab"><span class="nb">set</span><span class="p">(</span><span class="nb">groot</span><span class="p">,</span> <span class="s1">'DefaultTextColor'</span><span class="p">,</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]);</span>
+<span class="nb">set</span><span class="p">(</span><span class="nb">groot</span><span class="p">,</span> <span class="s1">'DefaultAxesXColor'</span><span class="p">,</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]);</span>
+<span class="nb">set</span><span class="p">(</span><span class="nb">groot</span><span class="p">,</span> <span class="s1">'DefaultAxesYColor'</span><span class="p">,</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]);</span></code></pre></figure>
+
+<p>Finally, we can make Matlab use LaTeX to render all text. This will give the figure a much more professional feeling.</p>
+
+<figure class="highlight"><pre><code class="language-matlab" data-lang="matlab"><span class="nb">set</span><span class="p">(</span><span class="nb">groot</span><span class="p">,</span> <span class="s1">'DefaultTextInterpreter'</span><span class="p">,</span> <span class="s1">'LaTeX'</span><span class="p">);</span>
+<span class="nb">set</span><span class="p">(</span><span class="nb">groot</span><span class="p">,</span> <span class="s1">'DefaultAxesTickLabelInterpreter'</span><span class="p">,</span> <span class="s1">'LaTeX'</span><span class="p">);</span>
+<span class="nb">set</span><span class="p">(</span><span class="nb">groot</span><span class="p">,</span> <span class="s1">'DefaultAxesFontName'</span><span class="p">,</span> <span class="s1">'LaTeX'</span><span class="p">);</span>
+<span class="nb">set</span><span class="p">(</span><span class="nb">groot</span><span class="p">,</span> <span class="s1">'DefaultLegendInterpreter'</span><span class="p">,</span> <span class="s1">'LaTeX'</span><span class="p">);</span></code></pre></figure>
+
+<p>The result of making these changes can be seen in <a href="#Figure3">Figure 3</a>. Clearly this is a much more attractive plot than in Figure 2, and these settings will be applied to all subsequent figures. The full Matlab code can be found below Figure 3.</p>
+
+<figure style="width: 708px" class="figure">
+    <a name="Figure3"></a>
+    <img src="http://assets.steventhornton.ca/Default_Plot_Settings_in_Matlab/Figure3.png" srcset="http://assets.steventhornton.ca/Default_Plot_Settings_in_Matlab/Figure3.png 1x, http://assets.steventhornton.ca/Default_Plot_Settings_in_Matlab/Figure3%402x.png 2x" alt="Figure 3" width="708" height="216" />
+    <figcaption><b>Figure 3:</b> <i>Left:</i> Plot of the first five Bessel functions of the first kind. <i>Right:</i> Plot of the first five Legendre polynomials. The factory default style has been overridden to give the plots a more professional look.
+    </figcaption>
+</figure>
+
+<figure class="highlight"><pre><code class="language-matlab" data-lang="matlab"><span class="c1">% Set the default plot properties</span>
+<span class="n">colors</span> <span class="o">=</span> <span class="p">[</span><span class="mi">241</span><span class="p">,</span> <span class="mi">90</span><span class="p">,</span> <span class="mi">90</span><span class="p">;</span>
+          <span class="mi">240</span><span class="p">,</span> <span class="mi">196</span><span class="p">,</span> <span class="mi">25</span><span class="p">;</span>
+          <span class="mi">78</span><span class="p">,</span> <span class="mi">186</span><span class="p">,</span> <span class="mi">111</span><span class="p">;</span>
+          <span class="mi">45</span><span class="p">,</span> <span class="mi">149</span><span class="p">,</span> <span class="mi">191</span><span class="p">;</span>
+          <span class="mi">149</span><span class="p">,</span> <span class="mi">91</span><span class="p">,</span> <span class="mi">165</span><span class="p">]/</span><span class="mi">255</span><span class="p">;</span>
+
+<span class="nb">set</span><span class="p">(</span><span class="nb">groot</span><span class="p">,</span> <span class="s1">'DefaultAxesColor'</span><span class="p">,</span> <span class="p">[</span><span class="mi">25</span><span class="p">,</span> <span class="mi">25</span><span class="p">,</span> <span class="mi">25</span><span class="p">]/</span><span class="mi">255</span><span class="p">);</span>
+<span class="nb">set</span><span class="p">(</span><span class="nb">groot</span><span class="p">,</span> <span class="s1">'DefaultFigureColor'</span><span class="p">,</span> <span class="p">[</span><span class="mi">25</span><span class="p">,</span> <span class="mi">25</span><span class="p">,</span> <span class="mi">25</span><span class="p">]/</span><span class="mi">255</span><span class="p">);</span>
+<span class="nb">set</span><span class="p">(</span><span class="nb">groot</span><span class="p">,</span> <span class="s1">'DefaultFigureInvertHardcopy'</span><span class="p">,</span> <span class="s1">'off'</span><span class="p">);</span>
+
+<span class="nb">set</span><span class="p">(</span><span class="nb">groot</span><span class="p">,</span> <span class="s1">'DefaultAxesColorOrder'</span><span class="p">,</span> <span class="n">colors</span><span class="p">);</span>
+<span class="nb">set</span><span class="p">(</span><span class="nb">groot</span><span class="p">,</span> <span class="s1">'DefaultLineLineWidth'</span><span class="p">,</span> <span class="mi">3</span><span class="p">);</span>
+
+<span class="nb">set</span><span class="p">(</span><span class="nb">groot</span><span class="p">,</span> <span class="s1">'DefaultTextInterpreter'</span><span class="p">,</span> <span class="s1">'LaTeX'</span><span class="p">);</span>
+<span class="nb">set</span><span class="p">(</span><span class="nb">groot</span><span class="p">,</span> <span class="s1">'DefaultAxesTickLabelInterpreter'</span><span class="p">,</span> <span class="s1">'LaTeX'</span><span class="p">);</span>
+<span class="nb">set</span><span class="p">(</span><span class="nb">groot</span><span class="p">,</span> <span class="s1">'DefaultAxesFontName'</span><span class="p">,</span> <span class="s1">'LaTeX'</span><span class="p">);</span>
+<span class="nb">set</span><span class="p">(</span><span class="nb">groot</span><span class="p">,</span> <span class="s1">'DefaultLegendInterpreter'</span><span class="p">,</span> <span class="s1">'LaTeX'</span><span class="p">);</span>
+
+
+<span class="c1">% Figure 1</span>
+<span class="nb">figure</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+
+<span class="n">x</span> <span class="o">=</span> <span class="nb">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">1000</span><span class="p">);</span>
+
+<span class="nb">hold</span> <span class="n">on</span><span class="p">;</span>
+<span class="k">for</span> <span class="nb">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">:</span><span class="mi">4</span>
+    <span class="nb">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="nb">besselj</span><span class="p">(</span><span class="nb">i</span><span class="p">,</span> <span class="n">x</span><span class="p">));</span>
+<span class="k">end</span>
+<span class="nb">title</span><span class="p">(</span><span class="s1">'Plot of $J_{\nu}(x)$ for $\nu = 0\dots 4$'</span><span class="p">);</span>
+
+<span class="c1">% Figure 2</span>
+<span class="nb">figure</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span>
+
+<span class="n">x</span> <span class="o">=</span> <span class="nb">linspace</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1000</span><span class="p">);</span>
+
+<span class="nb">hold</span> <span class="n">on</span><span class="p">;</span>
+<span class="k">for</span> <span class="nb">i</span><span class="o">=</span><span class="mi">1</span><span class="p">:</span><span class="mi">5</span>
+    <span class="nb">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">legendreP</span><span class="p">(</span><span class="nb">i</span><span class="p">,</span><span class="n">x</span><span class="p">));</span>
+<span class="k">end</span>
+<span class="nb">title</span><span class="p">(</span><span class="s1">'Plot of $P_i(x)$ for $i=1 \dots 5$'</span><span class="p">);</span></code></pre></figure>
+
+<h2 id="resetting-the-factory-default-properties">Resetting the Factory Default Properties</h2>
+
+<p>If you decide you want to reset the properties back to the Matlab factory defaults, you may notice that the standard plot clear commands (<code class="highlighter-rouge">clf('reset')</code>, and <code class="highlighter-rouge">cla reset</code>) do not clear the properties. Running <code class="highlighter-rouge">set(groot, 'Default', struct())</code> will clear all custom default settings you have applied and the factory settings will be used.</p>
+
+<h2 id="my-default-settings">My Default Settings</h2>
+<p>Here are the default settings I typically use. A sample plot with only these settings applied can be seen in <a href="#Figure4">Figure 4</a>. You can add these to a <a href="https://www.mathworks.com/help/matlab/ref/startup.html" target="_blank">startup file</a> so they are automatically applied every time you open Matlab.</p>
+
+<figure class="highlight"><pre><code class="language-matlab" data-lang="matlab"><span class="nb">set</span><span class="p">(</span><span class="nb">groot</span><span class="p">,</span> <span class="s1">'DefaultLineLineWidth'</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="k">...</span>
+           <span class="s1">'DefaultTextInterpreter'</span><span class="p">,</span> <span class="s1">'LaTeX'</span><span class="p">,</span> <span class="k">...</span>
+           <span class="s1">'DefaultAxesTickLabelInterpreter'</span><span class="p">,</span> <span class="s1">'LaTeX'</span><span class="p">,</span> <span class="k">...</span>
+           <span class="s1">'DefaultAxesFontName'</span><span class="p">,</span> <span class="s1">'LaTeX'</span><span class="p">,</span> <span class="k">...</span>
+           <span class="s1">'DefaultLegendInterpreter'</span><span class="p">,</span> <span class="s1">'LaTeX'</span><span class="p">,</span> <span class="k">...</span>
+           <span class="s1">'DefaultAxesLineWidth'</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">,</span> <span class="k">...</span>
+           <span class="s1">'DefaultAxesFontSize'</span><span class="p">,</span> <span class="mi">16</span><span class="p">,</span> <span class="k">...</span>
+           <span class="s1">'DefaultAxesBox'</span><span class="p">,</span> <span class="s1">'on'</span><span class="p">,</span> <span class="k">...</span>
+           <span class="s1">'DefaultAxesColor'</span><span class="p">,</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="k">...</span>
+           <span class="s1">'DefaultFigureColor'</span><span class="p">,</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="k">...</span>
+           <span class="s1">'DefaultFigureInvertHardcopy'</span><span class="p">,</span> <span class="s1">'off'</span><span class="p">,</span> <span class="k">...</span>
+           <span class="s1">'DefaultFigurePaperUnits'</span><span class="p">,</span> <span class="s1">'inches'</span><span class="p">,</span> <span class="k">...</span>
+           <span class="s1">'DefaultFigureUnits'</span><span class="p">,</span> <span class="s1">'inches'</span><span class="p">,</span> <span class="k">...</span>
+           <span class="s1">'DefaultFigurePaperPosition'</span><span class="p">,</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mf">3.09</span><span class="p">],</span> <span class="k">...</span>
+           <span class="s1">'DefaultFigurePaperSize'</span><span class="p">,</span> <span class="p">[</span><span class="mi">5</span><span class="p">,</span> <span class="mf">3.09</span><span class="p">],</span> <span class="k">...</span>
+           <span class="s1">'DefaultFigurePosition'</span><span class="p">,</span> <span class="p">[</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mf">4.9</span><span class="p">,</span> <span class="mf">2.99</span><span class="p">]);</span></code></pre></figure>
+
+<figure style="width: 708px" class="figure">
+    <a name="Figure3"></a>
+    <img src="http://assets.steventhornton.ca/Default_Plot_Settings_in_Matlab/Figure4.png" srcset="http://assets.steventhornton.ca/Default_Plot_Settings_in_Matlab/Figure4.png 1x, http://assets.steventhornton.ca/Default_Plot_Settings_in_Matlab/Figure4%402x.png 2x" alt="Figure 4" width="708" height="216" />
+  <figcaption><b>Figure 4:</b> Sample plots with my default plot appearance settings applied.
+  </figcaption>
+</figure>
+
+<h2 id="final-thoughts">Final Thoughts</h2>
+<p>It takes a little bit of work to setup your own default plot settings in Matlab. Hopefully in the future Matlab will implement themes similar to how some of the popular plotting libraries work (ggplot, Plotly, Seaborn, etc.). I hope this article was helpful; if you have any tips, tricks, suggestions or questions, make sure to leave a comment below.</p>
+
+</div>
+
+
+  </div>
+  <footer>
+  <div class="container">
+    <ul class="social-media-icons">
+      
+      <li><a href="https://www.linkedin.com/in/stevenethornton" class="social-media-icons"><i class="fa fa-2x fa-linkedin-square" aria-hidden="true"></i></a></li>
+      
+      
+      <li><a href="mailto:steven@steventhornton.ca" class="social-media-icons"><i class="fa fa-2x fa-envelope-square" aria-hidden="true"></i></a></li>
+      
+        
+      <li><a href="https://twitter.com/stevenethornton" class="social-media-icons"><i class="fa fa-2x fa-twitter-square" aria-hidden="true"></i></a></li>
+      
+        
+      <li><a href="https://github.com/steventhornton" class="social-media-icons"><i class="fa fa-2x fa-github-square" aria-hidden="true"></i></a></li>
+      
+      <li>
+    </ul>
+  </div>
+</footer>
+
+</body>
+</html>
