@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-86308175-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-86308175-1');
+</script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<title>Steven Thornton</title>
+<meta name="description" content="Steven Thornton">
+<meta name="keywords" content="">
+<!-- Twitter Card and Open Graph tags -->
+<meta name="twitter:title" content="Publication Quality Plots with Matlab &#8211; ">
+<meta name="twitter:description" content="Steven Thornton">
+<meta name="twitter:creator" content="@stevenethornton">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image:src" content="http://localhost:4000/images/logo.png">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Publication Quality Plots with Matlab &#8211; ">
+<meta property="og:description" content="Steven Thornton">
+<meta property="og:url" content="http://localhost:4000/blog/publication-quality-plots-with-matlab.html">
+<meta property="og:site_name" content="">
+
+<!-- MathJax -->
+
+  <script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    showMathMenu: false,
+    showProcessingMessages: false,
+    "HTML-CSS": {
+      scale: 90
+    },
+    tex2jax: {
+      inlineMath: [ ['$','$'] ],
+      displayMath: [ ['$$','$$'] ],
+      processEscapes: true,
+    }
+  });
+</script>
+<script type="text/javascript"
+        src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS_HTML">
+</script>
+
+
+<script src="https://code.jquery.com/jquery-3.4.0.min.js" integrity="sha256-BJeo0qm959uMBGb65z40ejJYGSgR7REI4+CW1fNKwOg=" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+<link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+
+<!-- Webmaster Tools verfication -->
+
+
+
+
+
+<link rel="canonical" href="http://localhost:4000/blog/publication-quality-plots-with-matlab.html">
+<link href="http://localhost:4000/feed.xml" type="application/atom+xml" rel="alternate" title=" Feed">
+
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<link href="https://fonts.googleapis.com/css?family=Zilla+Slab" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+
+<link rel="stylesheet" href="http://localhost:4000/css/main.css" type="text/css" />
+
+
+</head>
+<body>
+  <div class="container-fullwidth navbar-dark bg-dark nav-container">
+  <div class="container">
+    <nav class="navbar navbar-expand-lg  justify-content-end">
+      <a class="navbar-brand mr-auto" href="http://localhost:4000">Steven Thornton</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse flex-grow-0" id="navbarSupportedContent">
+        <ul class="navbar-nav text-right">
+          <li class="nav-item ">
+            <a class="nav-link" href="http://localhost:4000">Home</a>
+          </li>
+          <li class="nav-item ">
+            <a class="nav-link" href="http://localhost:4000/blog">Blog</a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+  </div>
+</div>
+
+  <div class="container">
+  <h2>Publication Quality Plots with Matlab</h2>
+<p class="post-date">November 23, 2016</p>
+<div class="post">
+<p><strong>Note: This post may be out of date and some code may no longer do what is was originally intended. Since completing my PhD, I no longer have access to Matlab and am unable to update the post.</strong></p>
+
+<p>Matlab provides a powerful plotting interface. Unfortunately, the default settings do not produce the most visually appealing figures. Unlike other popular plotting libraries (<a href="https://ggplot2.tidyverse.org/" target="_blank">ggplot2</a>, <a href="http://matplotlib.org/" target="_blank">matplotlib</a>, <a href="http://www.highcharts.com/" target="_blank">highcharts</a>, <a href="https://plot.ly/" target="_blank">Plotly</a>, etc.), Matlab has no simple method for changing the overall appearance of a plot. One option is to use a platform such as Plotly within Matlab  (more details <a href="https://plot.ly/matlab/" target="_blank">here</a>). In this article I discuss how you can improve the appearance of the native plotting architecture within Matlab to give your figures a more professional, refined look.</p>
+
+<p>As a motivational example, both plots in <a href="#Figure1">Figure 1</a> were created with Matlab. The plot on the left uses the default plotting parameters, whereas the plot on the right has been adjusted as will be discussed in <a href="#Example1">Example 1</a>.</p>
+
+<figure style="width: 700px" class="figure">
+	<a name="Figure1"></a>
+  <img src="http://assets.steventhornton.ca/Publication_Quality_Plots_with_Matlab/Figure1.png" srcset="http://assets.steventhornton.ca/Publication_Quality_Plots_with_Matlab/Figure1.png 1x, http://assets.steventhornton.ca/Publication_Quality_Plots_with_Matlab/Figure1%402x.png 2x" alt="Example 1" width="700" height="216" />
+  <figcaption><b>Figure 1:</b> Two Matlab plots of the functions $e^{-x/15}\!\sin(x)$ and $e^{-x/15}\!\cos(x)$. Which do you prefer? The left plot uses the default plotting properties in Matlab and the one on the right has been adjusted for a more professional look.
+  </figcaption>
+</figure>
+
+<h2 id="interactive-customization">Interactive Customization</h2>
+
+<p>Before I jump into how you can improve the appearance of a plot within a Matlab script, there is one quick and easy alternative. The Matlab <a href="https://www.mathworks.com/help/matlab/creating_plots/plotting-tools--interactive-plotting.html" target="_blank">plot tools</a> interface can be accessed by the button at the far right of the toolbar in a figure window (see <a href="#Figure2">Figure 2</a>). This will open a window that allows quick interactive customization of a figure (see <a href="#Figure3">Figure 3</a>). One feature that makes this interface especially powerful is the ability to export the adjustments you have made to a script. Under File &gt; Generate Code… you can export a Matlab script with the exact settings needed to reproduce the changes you make to your figure within the plot tools interface.</p>
+
+<p>Although the plot tools interface works well, my personal preferences is to keep everything contained within a Matlab script such that when I return to a project weeks or months later, my plotting setup has not changed.</p>
+
+<figure style="width: 713px" class="figure">
+	<a name="Figure2"></a>
+  <img src="http://assets.steventhornton.ca/Publication_Quality_Plots_with_Matlab/Figure2.png" srcset="http://assets.steventhornton.ca/Publication_Quality_Plots_with_Matlab/Figure2.png 1x, http://assets.steventhornton.ca/Publication_Quality_Plots_with_Matlab/Figure2%402x.png 2x" alt="Button to open the plot properties GUI" width="713" height="426" />
+  <figcaption><b>Figure 2:</b> The circled button will open Matlab's plot tools interface where you can easily adjust the appearance of a figure. See <a href="#Example2">Example 2</a> for the Matlab script used to create this figure.
+  </figcaption>
+</figure>
+
+<figure style="width: 713px" class="figure">
+	<a name="Figure3"></a>
+	<img src="http://assets.steventhornton.ca/Publication_Quality_Plots_with_Matlab/Figure3.png" srcset="http://assets.steventhornton.ca/Publication_Quality_Plots_with_Matlab/Figure3.png 1x, http://assets.steventhornton.ca/Publication_Quality_Plots_with_Matlab/Figure3%402x.png 2x" alt="The plot tools interface" width="713" height="299" />
+	<figcaption><b>Figure 3:</b> The plot tools interface in Matlab is useful for quickly adjusting the appearance of a figure.</figcaption>
+</figure>
+
+<h2 id="example-1"><a name="Example1"></a>Example 1</h2>
+
+<p>I begin with an in-depth example of how to transform the plot in the left panel of <a href="#Figure1">Figure 1</a> into that in the right panel.</p>
+
+<p>The properties in Matlab that affect the appearance of a figure are broken into two categories: <strong>axes</strong> properties and <strong>figure</strong> properties. Within Matlab, the <code class="highlighter-rouge">gca</code> and <code class="highlighter-rouge">gcf</code> commands are used to adjust axes and figure properties respectively. Axes properties affect the appearance of elements such as the title, axis labels, tick marks, grid lines etc. A full list of the properties that can be adjusted can be found in the Matlab <a href="https://www.mathworks.com/help/matlab/ref/matlab.graphics.axis.axes-properties.html" target="_blank">axes properties documentation</a>. Figure properties control the appearance of the window. This is where you adjust settings such as the background color, figure window size, position of the plot, etc. Again, the Matlab <a href="https://www.mathworks.com/help/matlab/ref/matlab.ui.figure-properties.html" target="_blank">figure properties documentation</a>[] provides a full list of the properties that can be adjusted.</p>
+
+<h3 id="adjusting-the-plot-properties">Adjusting the Plot Properties</h3>
+
+<p>The first step in reproducing the plot in the right panel of <a href="#Figure1">Figure 1</a> is to create our base plot. This is a plot of the functions $e^{-x/15}\!\sin(x)$ and $e^{-x/15}\!\cos(x)$ for $x \in [0, 12\pi]$ with no changes to the appearance settings.</p>
+
+<figure class="highlight"><pre><code class="language-matlab" data-lang="matlab"><span class="n">x</span> <span class="o">=</span> <span class="nb">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">12</span><span class="o">*</span><span class="nb">pi</span><span class="p">,</span> <span class="mi">2016</span><span class="p">);</span>
+
+<span class="n">y1</span> <span class="o">=</span> <span class="nb">exp</span><span class="p">(</span><span class="o">-</span><span class="n">x</span><span class="p">/</span><span class="mi">15</span><span class="p">)</span><span class="o">.*</span><span class="nb">sin</span><span class="p">(</span><span class="n">x</span><span class="p">);</span>
+<span class="n">y2</span> <span class="o">=</span> <span class="nb">exp</span><span class="p">(</span><span class="o">-</span><span class="n">x</span><span class="p">/</span><span class="mi">15</span><span class="p">)</span><span class="o">.*</span><span class="nb">cos</span><span class="p">(</span><span class="n">x</span><span class="p">);</span>
+
+<span class="nb">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y1</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y2</span><span class="p">);</span>
+<span class="nb">title</span><span class="p">(</span><span class="s1">'A Plot of exp(-x/15)*sin(x) and exp(-x/15)*cos(x)'</span><span class="p">);</span></code></pre></figure>
+
+<p>At this point our plot will look the same as the left panel of <a href="#Figure1">Figure 1</a>. Before adjusting the axes and figure properties, we will work on the appearance of each function changing the line-width and color properties. To keep our code clean, it is best to separate the plotting of each function into different calls to the <code class="highlighter-rouge">plot</code> function, using the <code class="highlighter-rouge">hold on</code> command so both functions appear on the same figure.</p>
+
+<figure class="highlight"><pre><code class="language-matlab" data-lang="matlab"><span class="nb">hold</span> <span class="n">on</span><span class="p">;</span>
+<span class="nb">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y1</span><span class="p">);</span>
+<span class="nb">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y2</span><span class="p">);</span></code></pre></figure>
+
+<p>We are now able to adjust the line-width and colors of each curve. There are three ways this can be done. The first applies the properties directly within the <code class="highlighter-rouge">plot</code> function. The second and third store each plot in a variable, and adjust the properties of that plot variable.</p>
+
+<figure class="highlight"><pre><code class="language-matlab" data-lang="matlab"><span class="c1">% Method 1</span>
+<span class="nb">hold</span> <span class="n">on</span><span class="p">;</span>
+<span class="nb">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y1</span><span class="p">,</span> <span class="s1">'LineWidth'</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="s1">'Color'</span><span class="p">,</span> <span class="p">[</span><span class="mi">124</span><span class="p">,</span> <span class="mi">188</span><span class="p">,</span> <span class="mi">37</span><span class="p">]/</span><span class="mi">255</span><span class="p">);</span>
+<span class="nb">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y2</span><span class="p">,</span> <span class="s1">'LineWidth'</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="s1">'Color'</span><span class="p">,</span> <span class="p">[</span><span class="mi">157</span><span class="p">,</span> <span class="mi">88</span><span class="p">,</span> <span class="mi">176</span><span class="p">]/</span><span class="mi">255</span><span class="p">);</span>
+
+<span class="c1">% Method 2</span>
+<span class="nb">hold</span> <span class="n">on</span><span class="p">;</span>
+<span class="n">p1</span> <span class="o">=</span> <span class="nb">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y1</span><span class="p">);</span>
+<span class="n">p2</span> <span class="o">=</span> <span class="nb">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y2</span><span class="p">);</span>
+
+<span class="c1">% Set the properties</span>
+<span class="nb">set</span><span class="p">(</span><span class="n">p1</span><span class="p">,</span> <span class="s1">'LineWidth'</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="k">...</span>
+        <span class="s1">'Color'</span><span class="p">,</span> <span class="p">[</span><span class="mi">124</span><span class="p">,</span> <span class="mi">188</span><span class="p">,</span> <span class="mi">37</span><span class="p">]/</span><span class="mi">255</span><span class="p">);</span>
+<span class="nb">set</span><span class="p">(</span><span class="n">p2</span><span class="p">,</span> <span class="s1">'LineWidth'</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="k">...</span>
+        <span class="s1">'Color'</span><span class="p">,</span> <span class="p">[</span><span class="mi">157</span><span class="p">,</span> <span class="mi">88</span><span class="p">,</span> <span class="mi">176</span><span class="p">]/</span><span class="mi">255</span><span class="p">);</span>
+
+<span class="c1">% Method 3</span>
+<span class="nb">hold</span> <span class="n">on</span><span class="p">;</span>
+<span class="n">p1</span> <span class="o">=</span> <span class="nb">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y1</span><span class="p">);</span>
+<span class="n">p2</span> <span class="o">=</span> <span class="nb">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y2</span><span class="p">);</span>
+
+<span class="c1">% Set the properties</span>
+<span class="n">p1</span><span class="o">.</span><span class="n">LineWidth</span> <span class="o">=</span> <span class="mi">3</span><span class="p">;</span>
+<span class="n">p2</span><span class="o">.</span><span class="n">LineWidth</span> <span class="o">=</span> <span class="mi">3</span><span class="p">;</span>
+<span class="n">p1</span><span class="o">.</span><span class="n">Color</span> <span class="o">=</span> <span class="p">[</span><span class="mi">124</span><span class="p">,</span> <span class="mi">188</span><span class="p">,</span> <span class="mi">37</span><span class="p">]/</span><span class="mi">255</span><span class="p">;</span>
+<span class="n">p2</span><span class="o">.</span><span class="n">Color</span> <span class="o">=</span> <span class="p">[</span><span class="mi">157</span><span class="p">,</span> <span class="mi">88</span><span class="p">,</span> <span class="mi">176</span><span class="p">]/</span><span class="mi">255</span><span class="p">;</span></code></pre></figure>
+
+<p>All three methods produce the same results, the second and third can be easier to manage if you are adjusting a lot of properties for each plot. A full list of the properties for lines (the functions) can be found in Matlab’s documentation  <a href="https://www.mathworks.com/help/matlab/ref/plot.html#inputarg_LineSpec" target="_blank">here</a>. In the remainder of this article I will be using the third method to adjust settings.</p>
+
+<p>One thing I always like to adjust is the colors of lines or points in a figure. Using the <code class="highlighter-rouge">Color</code> property and a list of 3 rgb values between 0 and 1, you can adjust the color of each line or set of points individually. If you have difficulty deciding on colors that work well together, there are some great tools out there with pre-defined color schemes: <a href="https://color.adobe.com/explore/most-popular/?time=all" target="_blank">https://color.adobe.com/explore/most-popular/?time=all</a>. <a href="#Figure4">Figure 4</a> shows what the plot looks like after adjusting the line-widths and colors.</p>
+
+<figure style="width: 450px" class="figure">
+<a name="Figure4"></a>
+  <img src="http://assets.steventhornton.ca/Publication_Quality_Plots_with_Matlab/Figure4.png" srcset="http://assets.steventhornton.ca/Publication_Quality_Plots_with_Matlab/Figure4.png 1x, http://assets.steventhornton.ca/Publication_Quality_Plots_with_Matlab/Figure4%402x.png 2x" alt="Figure 4" width="450" height="278" />
+  <figcaption><b>Figure 4:</b> After adjusting the line-widths and colors.
+  </figcaption>
+</figure>
+
+<h3 id="axes-properties">Axes Properties</h3>
+<p>The axes properties are where most of the styling happens. The <code class="highlighter-rouge">gca</code> variable allows control of the axes properties. Unfortunately, any properties we adjust this way will only apply to the current figure. To set global properties, an under-documented feature in Matlab must be used. For more details, see my <a href="http://localhost:4000/blog/default-plot-settings-in-matlab/">Default Plot Settings in Matlab</a> post.</p>
+
+<p>The first thing we will adjust is the limits of our plot. The <code class="highlighter-rouge">axes</code> function in Matlab can be used to do this but, as an alternative, you can set the limits using the <code class="highlighter-rouge">XLim</code> and <code class="highlighter-rouge">YLim</code> properties. We will need access to the <code class="highlighter-rouge">gca</code> variable, this can be done by assigning it to a variable <code class="highlighter-rouge">ax = gca;</code> and working with the <code class="highlighter-rouge">ax</code> variable. As with plot properties, we can set the axes properties by either using the <code class="highlighter-rouge">set</code> function such as <code class="highlighter-rouge">set(ax, 'XLim', [0, 12*pi]);</code> or by directly changing the <code class="highlighter-rouge">ax</code> variable as <code class="highlighter-rouge">ax.XLim = [0, 12*pi];</code>, I use the latter. At this point our Matlab script for plotting our functions looks like this:</p>
+
+<figure class="highlight"><pre><code class="language-matlab" data-lang="matlab"><span class="c1">% Generate values from our functions</span>
+<span class="n">x</span> <span class="o">=</span> <span class="nb">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">12</span><span class="o">*</span><span class="nb">pi</span><span class="p">,</span> <span class="mi">2016</span><span class="p">);</span>
+<span class="n">y1</span> <span class="o">=</span> <span class="nb">exp</span><span class="p">(</span><span class="o">-</span><span class="n">x</span><span class="p">/</span><span class="mi">15</span><span class="p">)</span><span class="o">.*</span><span class="nb">sin</span><span class="p">(</span><span class="n">x</span><span class="p">);</span>
+<span class="n">y2</span> <span class="o">=</span> <span class="nb">exp</span><span class="p">(</span><span class="o">-</span><span class="n">x</span><span class="p">/</span><span class="mi">15</span><span class="p">)</span><span class="o">.*</span><span class="nb">cos</span><span class="p">(</span><span class="n">x</span><span class="p">);</span>
+
+<span class="c1">% Plot the functions</span>
+<span class="nb">hold</span> <span class="n">on</span><span class="p">;</span>
+<span class="n">p1</span> <span class="o">=</span> <span class="nb">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y1</span><span class="p">);</span>
+<span class="n">p2</span> <span class="o">=</span> <span class="nb">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y2</span><span class="p">);</span>
+
+<span class="c1">% Set the plot properties</span>
+<span class="n">p1</span><span class="o">.</span><span class="n">LineWidth</span> <span class="o">=</span> <span class="mi">3</span><span class="p">;</span>
+<span class="n">p2</span><span class="o">.</span><span class="n">LineWidth</span> <span class="o">=</span> <span class="mi">3</span><span class="p">;</span>
+<span class="n">p1</span><span class="o">.</span><span class="n">Color</span> <span class="o">=</span> <span class="p">[</span><span class="mi">124</span><span class="p">,</span> <span class="mi">188</span><span class="p">,</span> <span class="mi">37</span><span class="p">]/</span><span class="mi">255</span><span class="p">;</span>
+<span class="n">p2</span><span class="o">.</span><span class="n">Color</span> <span class="o">=</span> <span class="p">[</span><span class="mi">157</span><span class="p">,</span> <span class="mi">88</span><span class="p">,</span> <span class="mi">176</span><span class="p">]/</span><span class="mi">255</span><span class="p">;</span>
+
+<span class="c1">% Set the axes properties</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="nb">gca</span><span class="p">;</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">XLim</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">12</span><span class="o">*</span><span class="nb">pi</span><span class="p">];</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">YLim</span> <span class="o">=</span> <span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">];</span>
+
+<span class="nb">title</span><span class="p">(</span><span class="s1">'A Plot of exp(-x/15)*sin(x) and exp(-x/15)*cos(x)'</span><span class="p">);</span></code></pre></figure>
+
+<p>The next thing we may want to adjust is the appearance of the ticks along the $x$ and $y$ axes. Since we are plotting trigonometric functions, we will label the $x$-axis in intervals of $2\pi$.</p>
+
+<figure class="highlight"><pre><code class="language-matlab" data-lang="matlab"><span class="n">ax</span><span class="o">.</span><span class="n">XTick</span> <span class="o">=</span> <span class="nb">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">12</span><span class="o">*</span><span class="nb">pi</span><span class="p">,</span> <span class="mi">7</span><span class="p">);</span>    <span class="c1">% The locations of the tick marks</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">XTickLabels</span> <span class="o">=</span> <span class="p">{</span><span class="s1">'0'</span><span class="p">,</span> <span class="s1">'$2\pi$'</span><span class="p">,</span> <span class="s1">'$4\pi$'</span><span class="p">,</span> <span class="s1">'$6\pi$'</span><span class="p">,</span> <span class="s1">'$8\pi$'</span><span class="p">,</span> <span class="s1">'$10\pi$'</span><span class="p">,</span> <span class="s1">'$12\pi$'</span><span class="p">};</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">TickLabelInterpreter</span> <span class="o">=</span><span class="s1">'LaTeX'</span><span class="p">;</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">YTick</span> <span class="o">=</span> <span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">];</span></code></pre></figure>
+
+<p>Notice that a property called <code class="highlighter-rouge">TickLabelInterpreter</code> has been set to <code class="highlighter-rouge">LaTeX</code>. This will ensure that the tick labels are rendered using LaTeX so we get nice looking $\pi$ symbols. To render all the text (titles, axes labels, axes tick labels, etc.) within a plot with LaTeX a few properties must be set.</p>
+
+<figure class="highlight"><pre><code class="language-matlab" data-lang="matlab"><span class="n">ax</span><span class="o">.</span><span class="n">FontName</span> <span class="o">=</span> <span class="s1">'LaTeX'</span><span class="p">;</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">Title</span><span class="o">.</span><span class="n">Interpreter</span> <span class="o">=</span> <span class="s1">'LaTeX'</span><span class="p">;</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">XLabel</span><span class="o">.</span><span class="n">Interpreter</span> <span class="o">=</span> <span class="s1">'LaTeX'</span><span class="p">;</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">YLabel</span><span class="o">.</span><span class="n">Interpreter</span> <span class="o">=</span> <span class="s1">'LaTeX'</span><span class="p">;</span></code></pre></figure>
+
+<p>Since the title is now being rendered using LaTeX, inline equations can be included by surrounding them with dollar symbols.</p>
+
+<figure class="highlight"><pre><code class="language-matlab" data-lang="matlab"><span class="c1">% This should appear after defining the axes properties</span>
+<span class="c1">% otherwise you will see a warning.</span>
+<span class="nb">title</span><span class="p">(</span><span class="s1">'A Plot of $e^{-x/15}\!\sin(x)$ and $e^{-x/15}\!\cos(x)$'</span><span class="p">);</span></code></pre></figure>
+
+<p>The result of adjusting the axes properties can be seen in <a href="#Figure5">Figure 5</a>, which is nearly identical to the right panel of <a href="#Figure1">Figure 1</a>.</p>
+
+<figure style="width: 450px" class="figure">
+<a name="Figure5"></a>
+  <img src="http://assets.steventhornton.ca/Publication_Quality_Plots_with_Matlab/Figure5.png" srcset="http://assets.steventhornton.ca/Publication_Quality_Plots_with_Matlab/Figure5.png 1x, http://assets.steventhornton.ca/Publication_Quality_Plots_with_Matlab/Figure5%402x.png 2x" alt="Figure 5" width="450" height="278" />
+  <figcaption><b>Figure 5:</b> After adjusting the tick properties, and using LaTeX to render all labels.
+  </figcaption>
+</figure>
+
+<p>There are a few more axes properties that I like to adjust. First, I prefer not to have the plot surrounded with a box, this can be turned off using <code class="highlighter-rouge">ax.Box = 'off'</code>. Next, the width of the axis lines can be increased to make them more visible using <code class="highlighter-rouge">ax.LineWidth = 1.5</code>.</p>
+
+<h3 id="figure-properties">Figure Properties</h3>
+<p>The figure properties can be extremely powerful especially if you want to remain consistent in your styling, or want control over the font size of a plot. This can be especially useful if you are including your plot in a LaTeX document and want the font-size of the labels and title to match the font-size used in your LaTeX document. These properties will not affect the appearance of the plot itself, but will allow control over the size of the plotting window so you can be comfortable knowing all your plots are the same dimension.</p>
+
+<p>We will begin by adjusting the paper size for our plots. To gain access to the figure properties we will assign <code class="highlighter-rouge">figure()</code> to a variable. Here I have set the size of the plot to $5 \times 3.09$ inches (I used 3.09 so the aspect ratio of the plot is the <a href="https://en.wikipedia.org/wiki/Golden_ratio" target="_blank">golden ratio</a>). The <code class="highlighter-rouge">FigPosition</code> property will add margins around the plot so the title and axis labels do not get cut off.</p>
+
+<p><code class="highlighter-rouge">InvertHardcopy</code> controls the appearance of the plot when you save it. By setting this to <code class="highlighter-rouge">'off'</code>, Matlab will not make any changes to the appearance of the saved file.</p>
+
+<figure class="highlight"><pre><code class="language-matlab" data-lang="matlab"><span class="n">fig</span> <span class="o">=</span> <span class="nb">figure</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">PaperPositionMode</span> <span class="o">=</span> <span class="s1">'manual'</span><span class="p">;</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">PaperUnits</span> <span class="o">=</span> <span class="s1">'inches'</span><span class="p">;</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">Units</span> <span class="o">=</span> <span class="s1">'inches'</span><span class="p">;</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">PaperPosition</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mf">3.09</span><span class="p">];</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">PaperSize</span> <span class="o">=</span> <span class="p">[</span><span class="mi">5</span><span class="p">,</span> <span class="mf">3.09</span><span class="p">];</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">Position</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mf">4.9</span><span class="p">,</span> <span class="mf">2.99</span><span class="p">];</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">Resize</span> <span class="o">=</span> <span class="s1">'off'</span><span class="p">;</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">InvertHardcopy</span> <span class="o">=</span> <span class="s1">'off'</span><span class="p">;</span>
+
+<span class="c1">% Previous code here...</span></code></pre></figure>
+
+<h3 id="putting-it-all-together">Putting It All Together</h3>
+<p>Here is the final script used for creating the plot in the right panel of <a href="#Figure1">Figure 1</a>:</p>
+
+<figure class="highlight"><pre><code class="language-matlab" data-lang="matlab"><span class="c1">% Generate values from our functions</span>
+<span class="n">x</span> <span class="o">=</span> <span class="nb">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">12</span><span class="o">*</span><span class="nb">pi</span><span class="p">,</span> <span class="mi">2016</span><span class="p">);</span>
+<span class="n">y1</span> <span class="o">=</span> <span class="nb">exp</span><span class="p">(</span><span class="o">-</span><span class="n">x</span><span class="p">/</span><span class="mi">15</span><span class="p">)</span><span class="o">.*</span><span class="nb">sin</span><span class="p">(</span><span class="n">x</span><span class="p">);</span>
+<span class="n">y2</span> <span class="o">=</span> <span class="nb">exp</span><span class="p">(</span><span class="o">-</span><span class="n">x</span><span class="p">/</span><span class="mi">15</span><span class="p">)</span><span class="o">.*</span><span class="nb">cos</span><span class="p">(</span><span class="n">x</span><span class="p">);</span>
+
+<span class="c1">% Set up the figure properties</span>
+<span class="n">fig</span> <span class="o">=</span> <span class="nb">figure</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">PaperPositionMode</span> <span class="o">=</span> <span class="s1">'manual'</span><span class="p">;</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">PaperUnits</span> <span class="o">=</span> <span class="s1">'inches'</span><span class="p">;</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">Units</span> <span class="o">=</span> <span class="s1">'inches'</span><span class="p">;</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">PaperPosition</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mf">3.09</span><span class="p">];</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">PaperSize</span> <span class="o">=</span> <span class="p">[</span><span class="mi">5</span><span class="p">,</span> <span class="mf">3.09</span><span class="p">];</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">Position</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mf">4.9</span><span class="p">,</span> <span class="mf">2.99</span><span class="p">];</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">Resize</span> <span class="o">=</span> <span class="s1">'off'</span><span class="p">;</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">InvertHardcopy</span> <span class="o">=</span> <span class="s1">'off'</span><span class="p">;</span>
+
+<span class="c1">% Set up the axes properties</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="nb">gca</span><span class="p">;</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">XLim</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">12</span><span class="o">*</span><span class="nb">pi</span><span class="p">];</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">YLim</span> <span class="o">=</span> <span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">];</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">XTick</span> <span class="o">=</span> <span class="nb">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">12</span><span class="o">*</span><span class="nb">pi</span><span class="p">,</span> <span class="mi">7</span><span class="p">);</span>    <span class="c1">% The locations of the tick marks</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">XTickLabels</span> <span class="o">=</span> <span class="p">{</span><span class="s1">'0'</span><span class="p">,</span> <span class="s1">'$2\pi$'</span><span class="p">,</span> <span class="s1">'$4\pi$'</span><span class="p">,</span> <span class="s1">'$6\pi$'</span><span class="p">,</span> <span class="s1">'$8\pi$'</span><span class="p">,</span> <span class="s1">'$10\pi$'</span><span class="p">,</span> <span class="s1">'$12\pi$'</span><span class="p">};</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">TickLabelInterpreter</span> <span class="o">=</span> <span class="s1">'LaTeX'</span><span class="p">;</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">YTick</span> <span class="o">=</span> <span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">];</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">FontName</span> <span class="o">=</span> <span class="s1">'LaTeX'</span><span class="p">;</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">Title</span><span class="o">.</span><span class="n">Interpreter</span> <span class="o">=</span> <span class="s1">'LaTeX'</span><span class="p">;</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">XLabel</span><span class="o">.</span><span class="n">Interpreter</span> <span class="o">=</span> <span class="s1">'LaTeX'</span><span class="p">;</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">YLabel</span><span class="o">.</span><span class="n">Interpreter</span> <span class="o">=</span> <span class="s1">'LaTeX'</span><span class="p">;</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">Box</span> <span class="o">=</span> <span class="s1">'off'</span><span class="p">;</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">LineWidth</span> <span class="o">=</span> <span class="mf">1.5</span><span class="p">;</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">FontSize</span> <span class="o">=</span> <span class="mi">12</span><span class="p">;</span>
+
+<span class="c1">% Plot the functions</span>
+<span class="nb">hold</span> <span class="n">on</span><span class="p">;</span>
+<span class="n">p1</span> <span class="o">=</span> <span class="nb">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y1</span><span class="p">);</span>
+<span class="n">p2</span> <span class="o">=</span> <span class="nb">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y2</span><span class="p">);</span>
+
+<span class="c1">% Set the plot properties</span>
+<span class="n">p1</span><span class="o">.</span><span class="n">LineWidth</span> <span class="o">=</span> <span class="mi">3</span><span class="p">;</span>
+<span class="n">p2</span><span class="o">.</span><span class="n">LineWidth</span> <span class="o">=</span> <span class="mi">3</span><span class="p">;</span>
+<span class="n">p1</span><span class="o">.</span><span class="n">Color</span> <span class="o">=</span> <span class="p">[</span><span class="mi">124</span><span class="p">,</span> <span class="mi">188</span><span class="p">,</span> <span class="mi">37</span><span class="p">]/</span><span class="mi">255</span><span class="p">;</span>
+<span class="n">p2</span><span class="o">.</span><span class="n">Color</span> <span class="o">=</span> <span class="p">[</span><span class="mi">157</span><span class="p">,</span> <span class="mi">88</span><span class="p">,</span> <span class="mi">176</span><span class="p">]/</span><span class="mi">255</span><span class="p">;</span>
+
+<span class="c1">% Add a title</span>
+<span class="nb">title</span><span class="p">(</span><span class="s1">'A Plot of $e^{-x/15}\!\sin(x)$ and $e^{-x/15}\!\cos(x)$'</span><span class="p">);</span></code></pre></figure>
+
+<h2 id="example-2"><a name="Example2"></a>Example 2</h2>
+
+<p>The following Matlab script was used to produce <a href="#Figure2">Figure 2</a>.</p>
+
+<figure class="highlight"><pre><code class="language-matlab" data-lang="matlab"><span class="c1">% The colors used for each curve</span>
+<span class="n">colors</span> <span class="o">=</span> <span class="p">[</span><span class="mi">8</span><span class="p">,</span> <span class="mi">126</span><span class="p">,</span> <span class="mi">214</span><span class="p">;</span>
+          <span class="mi">10</span><span class="p">,</span> <span class="mi">113</span><span class="p">,</span> <span class="mi">196</span><span class="p">;</span>
+          <span class="mi">12</span><span class="p">,</span> <span class="mi">101</span><span class="p">,</span> <span class="mi">167</span><span class="p">;</span>
+          <span class="mi">14</span><span class="p">,</span> <span class="mi">88</span><span class="p">,</span> <span class="mi">143</span><span class="p">;</span>
+          <span class="mi">16</span><span class="p">,</span> <span class="mi">76</span><span class="p">,</span> <span class="mi">120</span><span class="p">;</span>
+          <span class="mi">19</span><span class="p">,</span> <span class="mi">63</span><span class="p">,</span> <span class="mi">96</span><span class="p">;</span>
+          <span class="mi">21</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">72</span><span class="p">;</span>
+          <span class="mi">23</span><span class="p">,</span> <span class="mi">38</span><span class="p">,</span> <span class="mi">49</span><span class="p">]/</span><span class="mi">255</span><span class="p">;</span>
+
+<span class="c1">% Set the figure properties</span>
+<span class="n">fig</span> <span class="o">=</span> <span class="nb">figure</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">Resize</span> <span class="o">=</span> <span class="s1">'off'</span><span class="p">;</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">PaperUnits</span> <span class="o">=</span> <span class="s1">'inches'</span><span class="p">;</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">Units</span> <span class="o">=</span> <span class="s1">'inches'</span><span class="p">;</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">PaperPositionMode</span> <span class="o">=</span> <span class="s1">'manual'</span><span class="p">;</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">PaperPosition</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">5</span><span class="p">];</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">PaperSize</span> <span class="o">=</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">5</span><span class="p">];</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">Position</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mf">9.9</span><span class="p">,</span> <span class="mf">4.9</span><span class="p">];</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">Color</span> <span class="o">=</span> <span class="p">[</span><span class="mi">25</span><span class="p">,</span> <span class="mi">25</span><span class="p">,</span> <span class="mi">25</span><span class="p">]/</span><span class="mi">255</span><span class="p">;</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">InvertHardcopy</span> <span class="o">=</span> <span class="s1">'off'</span><span class="p">;</span>
+
+<span class="c1">% Set the axes properties</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="nb">gca</span><span class="p">;</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">FontName</span> <span class="o">=</span> <span class="s1">'LaTeX'</span><span class="p">;</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">FontSize</span> <span class="o">=</span> <span class="mi">16</span><span class="p">;</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">TickLabelInterpreter</span> <span class="o">=</span> <span class="s1">'LaTeX'</span><span class="p">;</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">XLim</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">12</span><span class="o">*</span><span class="nb">pi</span><span class="p">];</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">YLim</span> <span class="o">=</span> <span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">];</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">XTick</span> <span class="o">=</span> <span class="nb">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">12</span><span class="o">*</span><span class="nb">pi</span><span class="p">,</span> <span class="mi">13</span><span class="p">);</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">XTickLabel</span> <span class="o">=</span> <span class="p">{</span><span class="mi">0</span><span class="p">,</span> <span class="s1">'$\pi$'</span><span class="p">,</span> <span class="s1">'$'</span> <span class="o">+</span> <span class="nb">string</span><span class="p">(</span><span class="mi">2</span><span class="p">:</span><span class="mi">12</span><span class="p">)</span> <span class="o">+</span> <span class="s1">'\pi$'</span><span class="p">};</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">YTick</span> <span class="o">=</span> <span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">];</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">XColor</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">];</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">YColor</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">];</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">Box</span> <span class="o">=</span> <span class="s1">'off'</span><span class="p">;</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">Layer</span> <span class="o">=</span> <span class="s1">'top'</span><span class="p">;</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">Color</span> <span class="o">=</span> <span class="p">[</span><span class="mi">25</span><span class="p">,</span> <span class="mi">25</span><span class="p">,</span> <span class="mi">25</span><span class="p">]/</span><span class="mi">255</span><span class="p">;</span>
+
+<span class="nb">hold</span> <span class="n">on</span><span class="p">;</span>
+
+<span class="k">for</span> <span class="nb">i</span><span class="o">=</span><span class="mi">0</span><span class="p">:</span><span class="mi">13</span>
+    <span class="k">for</span> <span class="nb">j</span><span class="o">=</span><span class="mi">1</span><span class="p">:</span><span class="mi">8</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="nb">linspace</span><span class="p">((</span><span class="nb">i</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="nb">pi</span><span class="o">+</span><span class="mf">1e-10</span> <span class="o">-</span> <span class="p">(</span><span class="nb">j</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="nb">pi</span><span class="p">/</span><span class="mi">5</span><span class="p">,</span> <span class="nb">i</span><span class="o">*</span><span class="nb">pi</span><span class="o">-</span><span class="mf">1e-10</span> <span class="o">-</span> <span class="p">(</span><span class="nb">j</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="nb">pi</span><span class="p">/</span><span class="mi">5</span><span class="p">,</span> <span class="mi">1000</span><span class="p">);</span>
+        <span class="n">l</span> <span class="o">=</span> <span class="o">-</span><span class="nb">exp</span><span class="p">(</span><span class="o">-</span><span class="n">x</span><span class="p">/</span><span class="mi">15</span><span class="p">);</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="n">l</span><span class="o">.</span><span class="p">/</span><span class="nb">sin</span><span class="p">(</span><span class="n">x</span> <span class="o">+</span> <span class="p">(</span><span class="nb">j</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="nb">pi</span><span class="p">/</span><span class="mi">5</span><span class="p">);</span>
+
+        <span class="n">p</span> <span class="o">=</span> <span class="nb">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">);</span>
+        <span class="n">p</span><span class="o">.</span><span class="n">LineWidth</span> <span class="o">=</span> <span class="mi">2</span><span class="p">;</span>
+        <span class="n">p</span><span class="o">.</span><span class="n">Color</span> <span class="o">=</span> <span class="p">[</span><span class="mi">34</span><span class="p">,</span> <span class="mi">34</span><span class="p">,</span> <span class="mi">34</span><span class="p">]/</span><span class="mi">255</span><span class="p">;</span>
+
+        <span class="n">p</span> <span class="o">=</span> <span class="nb">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="o">-</span><span class="n">y</span><span class="p">);</span>
+        <span class="n">p</span><span class="o">.</span><span class="n">LineWidth</span> <span class="o">=</span> <span class="mi">2</span><span class="p">;</span>
+        <span class="n">p</span><span class="o">.</span><span class="n">Color</span> <span class="o">=</span> <span class="p">[</span><span class="mi">34</span><span class="p">,</span> <span class="mi">34</span><span class="p">,</span> <span class="mi">34</span><span class="p">]/</span><span class="mi">255</span><span class="p">;</span>
+    <span class="k">end</span>
+<span class="k">end</span>
+
+<span class="n">x</span> <span class="o">=</span> <span class="nb">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">12</span><span class="o">*</span><span class="nb">pi</span><span class="p">,</span> <span class="mi">1000</span><span class="p">);</span>
+<span class="n">l</span> <span class="o">=</span> <span class="nb">exp</span><span class="p">(</span><span class="o">-</span><span class="n">x</span><span class="p">/</span><span class="mi">15</span><span class="p">);</span>
+
+<span class="k">for</span> <span class="nb">i</span><span class="o">=</span><span class="mi">8</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">:</span><span class="mi">1</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="n">l</span><span class="o">.*</span><span class="nb">cos</span><span class="p">(</span><span class="n">x</span> <span class="o">-</span> <span class="p">(</span><span class="nb">i</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="nb">pi</span><span class="p">/</span><span class="mi">5</span><span class="p">);</span>
+
+    <span class="n">p</span> <span class="o">=</span> <span class="nb">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">);</span>
+    <span class="n">p</span><span class="o">.</span><span class="n">Color</span> <span class="o">=</span> <span class="n">colors</span><span class="p">(</span><span class="nb">i</span><span class="p">,:);</span>
+    <span class="n">p</span><span class="o">.</span><span class="n">LineWidth</span> <span class="o">=</span> <span class="mi">2</span><span class="p">;</span>
+<span class="k">end</span></code></pre></figure>
+
+<h2 id="example-3">Example 3</h2>
+<figure style="width: 650px" class="figure">
+	<a name="Figure6"></a>
+  <img src="http://assets.steventhornton.ca/Publication_Quality_Plots_with_Matlab/Figure6.png" srcset="http://assets.steventhornton.ca/Publication_Quality_Plots_with_Matlab/Figure6.png 1x, http://assets.steventhornton.ca/Publication_Quality_Plots_with_Matlab/Figure6%402x.png 2x" alt="Figure 6" width="650" height="325" />
+  <figcaption><b>Figure 6:</b> US flu infection rates for October 2005 - October 2006.
+  </figcaption>
+</figure>
+
+<p>The following Matlab script was used to produce <a href="#Figure6">Figure 6</a>. The <code class="highlighter-rouge">flu</code> dataset is one of several <a href="https://www.mathworks.com/help/stats/sample-data-sets.html" target="_blank">sample datasets</a> in Matlab. It contains the flu infection rates in several regions of the US between Oct. 2005 and Oct. 2006.</p>
+
+<p>Some notes about the code below:</p>
+<ul>
+  <li><code class="highlighter-rouge">ax.ColorOrder = colors;</code> sets the default colors to use for each line that is plotted</li>
+  <li><code class="highlighter-rouge">ax.XColor = 'white';</code> and <code class="highlighter-rouge">ax.YColor = 'white';</code> controls the color of the $x$ and $y$ axes. Here I used <code class="highlighter-rouge">'white'</code> as the color instead of a vector of rgb values. <code class="highlighter-rouge">white</code> is one of the built-in <a href="https://www.mathworks.com/help/matlab/ref/colormap.html" target="_blank">colormaps</a> in Matlab.</li>
+  <li>In Matlab everything is a matrix, this means you can create a matrix (a $6 \times 1$ matrix in this case) of line plots. This can help simplify your scripts when you have several plots and you wish to change the properties (such as <code class="highlighter-rouge">linewidth</code>) of all of them at once. Note that I used the <code class="highlighter-rouge">set</code> function here. This doesn’t work by directly accessing the plot variable.</li>
+  <li>A legend has been added to this plot, and like the properties explored earlier, there are a number of properties specific to a legend that can be modified. A full list can be found <a href="https://www.mathworks.com/help/matlab/ref/legend-properties.html" target="_blank">here</a><a href=""></a>.</li>
+  <li>Just as adding a legend, a title has several properties that affect its appearance, see <a href="https://www.mathworks.com/help/matlab/ref/title.html" target="_blank">Matlab’s documentation</a> for more details.</li>
+</ul>
+
+<figure class="highlight"><pre><code class="language-matlab" data-lang="matlab"><span class="c1">% Load the data</span>
+<span class="nb">load</span> <span class="n">flu</span><span class="o">.</span><span class="n">mat</span>
+
+<span class="c1">% Convert the Date column to datetime</span>
+<span class="n">flu</span><span class="o">.</span><span class="n">Date</span> <span class="o">=</span> <span class="nb">datetime</span><span class="p">(</span><span class="n">flu</span><span class="o">.</span><span class="n">Date</span><span class="p">,</span> <span class="s1">'InputFormat'</span><span class="p">,</span> <span class="s1">'M/dd/yyyy'</span><span class="p">);</span>
+
+<span class="c1">% Colors for the lines that will be plotted</span>
+<span class="n">colors</span> <span class="o">=</span> <span class="p">[</span><span class="mi">241</span><span class="p">,</span> <span class="mi">90</span><span class="p">,</span> <span class="mi">90</span><span class="p">;</span>
+          <span class="mi">240</span><span class="p">,</span> <span class="mi">196</span><span class="p">,</span> <span class="mi">25</span><span class="p">;</span>
+          <span class="mi">78</span><span class="p">,</span> <span class="mi">186</span><span class="p">,</span> <span class="mi">111</span><span class="p">;</span>
+          <span class="mi">45</span><span class="p">,</span> <span class="mi">149</span><span class="p">,</span> <span class="mi">191</span><span class="p">;</span>
+          <span class="mi">149</span><span class="p">,</span> <span class="mi">91</span><span class="p">,</span> <span class="mi">165</span><span class="p">]/</span><span class="mi">255</span><span class="p">;</span>
+
+<span class="c1">% Set the figure properties</span>
+<span class="n">fig</span> <span class="o">=</span> <span class="nb">figure</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+
+<span class="c1">% Set the paper size</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">Resize</span> <span class="o">=</span> <span class="s1">'off'</span><span class="p">;</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">PaperUnits</span> <span class="o">=</span> <span class="s1">'inches'</span><span class="p">;</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">Units</span> <span class="o">=</span> <span class="s1">'inches'</span><span class="p">;</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">PaperPositionMode</span> <span class="o">=</span> <span class="s1">'manual'</span><span class="p">;</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">PaperPosition</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">5</span><span class="p">];</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">PaperSize</span> <span class="o">=</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">5</span><span class="p">];</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">Position</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mf">9.9</span><span class="p">,</span> <span class="mf">4.9</span><span class="p">];</span>
+
+<span class="c1">% Background color</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">Color</span> <span class="o">=</span> <span class="p">[</span><span class="mi">25</span><span class="p">,</span> <span class="mi">25</span><span class="p">,</span> <span class="mi">25</span><span class="p">]/</span><span class="mi">255</span><span class="p">;</span>
+
+<span class="c1">% Prevent the background color from chaning on save</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">InvertHardcopy</span> <span class="o">=</span> <span class="s1">'off'</span><span class="p">;</span>
+
+
+<span class="c1">% Set the axes properties</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="nb">gca</span><span class="p">;</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">FontName</span> <span class="o">=</span> <span class="s1">'LaTeX'</span><span class="p">;</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">TickLabelInterpreter</span> <span class="o">=</span> <span class="s1">'LaTeX'</span><span class="p">;</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">FontSize</span> <span class="o">=</span> <span class="mi">16</span><span class="p">;</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">YLim</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mf">3.5</span><span class="p">];</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">YTick</span> <span class="o">=</span> <span class="mi">0</span><span class="p">:</span><span class="mi">3</span><span class="p">;</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">YTickLabel</span> <span class="o">=</span> <span class="p">{</span><span class="nb">string</span><span class="p">(</span><span class="n">ax</span><span class="o">.</span><span class="n">YTick</span><span class="p">)</span> <span class="o">+</span> <span class="s1">'\%'</span><span class="p">};</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">ColorOrder</span> <span class="o">=</span> <span class="n">colors</span><span class="p">;</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">XColor</span> <span class="o">=</span> <span class="s1">'white'</span><span class="p">;</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">YColor</span> <span class="o">=</span> <span class="s1">'white'</span><span class="p">;</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">Box</span> <span class="o">=</span> <span class="s1">'off'</span><span class="p">;</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">LineWidth</span> <span class="o">=</span> <span class="mf">1.5</span><span class="p">;</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">Color</span> <span class="o">=</span> <span class="p">[</span><span class="mi">25</span><span class="p">,</span> <span class="mi">25</span><span class="p">,</span> <span class="mi">25</span><span class="p">]/</span><span class="mi">255</span><span class="p">;</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">YGrid</span> <span class="o">=</span> <span class="s1">'on'</span><span class="p">;</span>
+
+<span class="c1">% Plot the data</span>
+<span class="nb">hold</span> <span class="n">on</span><span class="p">;</span>
+<span class="n">p</span> <span class="o">=</span> <span class="p">[</span><span class="nb">plot</span><span class="p">(</span><span class="n">flu</span><span class="o">.</span><span class="n">Date</span><span class="p">,</span> <span class="n">flu</span><span class="o">.</span><span class="n">NE</span><span class="p">);</span>
+     <span class="nb">plot</span><span class="p">(</span><span class="n">flu</span><span class="o">.</span><span class="n">Date</span><span class="p">,</span> <span class="n">flu</span><span class="o">.</span><span class="n">MidAtl</span><span class="p">);</span>
+     <span class="nb">plot</span><span class="p">(</span><span class="n">flu</span><span class="o">.</span><span class="n">Date</span><span class="p">,</span> <span class="n">flu</span><span class="o">.</span><span class="n">ENCentral</span><span class="p">);</span>
+     <span class="nb">plot</span><span class="p">(</span><span class="n">flu</span><span class="o">.</span><span class="n">Date</span><span class="p">,</span> <span class="n">flu</span><span class="o">.</span><span class="n">WNCentral</span><span class="p">);</span>
+     <span class="nb">plot</span><span class="p">(</span><span class="n">flu</span><span class="o">.</span><span class="n">Date</span><span class="p">,</span> <span class="n">flu</span><span class="o">.</span><span class="n">SAtl</span><span class="p">)];</span>
+
+<span class="c1">% Set all the line widths at once</span>
+<span class="nb">set</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="s1">'LineWidth'</span><span class="p">,</span> <span class="mi">2</span><span class="p">);</span>
+
+<span class="c1">% Set the tick marks for the x-axis to months</span>
+<span class="nb">datetick</span><span class="p">(</span><span class="s1">'x'</span><span class="p">,</span><span class="s1">'mmm'</span><span class="p">,</span> <span class="s1">'keeplimits'</span><span class="p">);</span>
+
+<span class="c1">% Add a legend</span>
+<span class="n">lgd</span> <span class="o">=</span> <span class="nb">legend</span><span class="p">(</span><span class="s1">'North East'</span><span class="p">,</span> <span class="k">...</span>
+             <span class="s1">'Mid Atlantic'</span><span class="p">,</span> <span class="k">...</span>
+             <span class="s1">'NE Central'</span><span class="p">,</span> <span class="k">...</span>
+             <span class="s1">'NW Central'</span><span class="p">,</span> <span class="k">...</span>
+             <span class="s1">'South Atlantic'</span><span class="p">);</span>
+<span class="n">lgd</span><span class="o">.</span><span class="n">Box</span> <span class="o">=</span> <span class="s1">'off'</span><span class="p">;</span>
+<span class="n">lgd</span><span class="o">.</span><span class="n">Interpreter</span> <span class="o">=</span> <span class="s1">'LaTeX'</span><span class="p">;</span>
+<span class="n">lgd</span><span class="o">.</span><span class="n">TextColor</span> <span class="o">=</span> <span class="s1">'white'</span><span class="p">;</span>
+
+
+<span class="n">t</span> <span class="o">=</span> <span class="nb">title</span><span class="p">(</span><span class="s1">'US Flu Infection Rates from Oct. 2005 -- Oct 2006'</span><span class="p">);</span>
+<span class="n">t</span><span class="o">.</span><span class="n">Color</span> <span class="o">=</span> <span class="s1">'white'</span><span class="p">;</span>
+<span class="n">t</span><span class="o">.</span><span class="n">Interpreter</span> <span class="o">=</span> <span class="s1">'LaTeX'</span><span class="p">;</span></code></pre></figure>
+
+<h2 id="final-thoughts">Final Thoughts</h2>
+<p>The adjustments I have described here are useful when you plan on presenting a figure, whether it is in a paper, on a poster or in a presentation. Hopefully in the future Matlab will introduce an easy way to quickly adjust the appearance of a figure (or maybe I will take this on as a future project). If you have any more tips or tricks for improving the appearance of a Matlab figure, make sure to leave a comment below.</p>
+
+<h3 id="references">References</h3>
+<p>A few articles have come out covering some ways to improve the appearance of a graph:</p>
+<ul>
+  <li><a href="http://blogs.mathworks.com/loren/2007/12/11/making-pretty-graphs/" target="_blank">http://blogs.mathworks.com/loren/2007/12/11/making-pretty-graphs/</a></li>
+  <li><a href="https://dgleich.wordpress.com/2013/06/04/creating-high-quality-graphics-in-matlab-for-papers-and-presentations/" target="_blank">https://dgleich.wordpress.com/2013/06/04/creating-high-quality-graphics-in-matlab-for-papers-and-presentations/</a></li>
+  <li><a href="http://www.matlabtips.com/beautiful-plots-in-matlab/" target="_blank">http://www.matlabtips.com/beautiful-plots-in-matlab/</a></li>
+</ul>
+
+</div>
+
+
+  </div>
+  <footer>
+  <div class="container">
+    <ul class="social-media-icons">
+      
+      <li><a href="https://www.linkedin.com/in/stevenethornton" class="social-media-icons"><i class="fa fa-2x fa-linkedin-square" aria-hidden="true"></i></a></li>
+      
+      
+      <li><a href="mailto:steven@steventhornton.ca" class="social-media-icons"><i class="fa fa-2x fa-envelope-square" aria-hidden="true"></i></a></li>
+      
+        
+      <li><a href="https://twitter.com/stevenethornton" class="social-media-icons"><i class="fa fa-2x fa-twitter-square" aria-hidden="true"></i></a></li>
+      
+        
+      <li><a href="https://github.com/steventhornton" class="social-media-icons"><i class="fa fa-2x fa-github-square" aria-hidden="true"></i></a></li>
+      
+      <li>
+    </ul>
+  </div>
+</footer>
+
+</body>
+</html>
