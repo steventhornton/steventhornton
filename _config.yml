@@ -7,6 +7,7 @@ url: "http://www.steventhornton.ca"
 markdown: kramdown
 highlighter: rouge
 asset_url: http://assets.steventhornton.ca
+permalink: /blog/:title:output_ext
 
 plugins: ['jekyll-paginate-v2', 'jekyll-gist', 'jekyll-feed']
 
